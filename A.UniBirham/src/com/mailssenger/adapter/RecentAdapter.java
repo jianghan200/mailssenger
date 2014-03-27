@@ -144,7 +144,7 @@ public class RecentAdapter extends BaseAdapter {
 		
 		viewHolder.recent_listview_name.setText(name);//昵称
 		
-		if(item.getMessage().startsWith("{\"")){
+		if(item.getMessage().startsWith("{\"")){//whetehr start with json
 			viewHolder.recent_listview_summary.setText(mGson.fromJson(item.getMessage(), MailModel.class).getSubject());
 		}else{
 			viewHolder.recent_listview_summary.setText(item.getMessage());
