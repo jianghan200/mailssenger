@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/background_color" >
+    
+    <include layout="@layout/network_status_bar" />
+
+
+    <LinearLayout
+        android:id="@+id/layout_login"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:layout_marginTop="40dp" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginTop="10dp" >
+
+            <EditText
+                android:id="@+id/et_log_accout"
+                android:layout_width="290dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/login_signin_bg"
+                android:drawableLeft="@drawable/login_accout_mark"
+                android:drawablePadding="0dp"
+                android:hint="@string/signin_label_email"
+                android:maxLength="30"
+                android:singleLine="true" >
+            </EditText>
+
+            <ImageButton
+                android:id="@+id/btn_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/et_log_accout"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/login_clear_btn" />
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/et_log_psw"
+            android:layout_width="290dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:background="@drawable/login_signin_bg"
+            android:drawableLeft="@drawable/login_psw_mark"
+            android:hint="@string/signin_password"
+            android:inputType="textPassword"
+            android:singleLine="true" >
+        </EditText>
+
+        <Button
+            android:id="@+id/btn_Log_in"
+            android:layout_width="293dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/login_bright_btn"
+            android:shadowColor="#80000000"
+            android:shadowRadius="6"
+            android:text="@string/login"
+            android:textColor="#ffffff"
+            android:textSize="23sp" >
+        </Button>
+
+        <LinearLayout
+            android:id="@+id/login_gap"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20"
+            android:orientation="horizontal" >
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_sign_in"
+            android:layout_width="293dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/login_dark_btn"
+            android:shadowColor="#30000000"
+            android:shadowRadius="12"
+            android:text="@string/signin"
+            android:textColor="#a6a6a6"
+            android:textSize="23sp" >
+        </Button>
+    </LinearLayout>
+
+</RelativeLayout>

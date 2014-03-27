@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/menu_row"
+	    android:layout_width="match_parent"
+	    android:layout_height="60dip"
+	    android:background="@drawable/menu_listitem"
+	    android:padding="2dip"
+	    android:orientation="horizontal" 
+	    android:gravity="center_vertical">
+    
+	    <ImageView
+            android:id="@+id/menu_item_icon"
+            android:layout_width="30dip"
+            android:layout_height="30dip"
+            android:layout_alignParentBottom="true"  
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dip"
+            android:layout_marginTop="7dip"
+            android:layout_marginBottom="7dip"
+          android:layout_marginRight="7dip"
+            
+            android:src="@drawable/menu_xingxing" 
+            android:scaleType="fitCenter" />
+	    
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="22dip"
+	        android:layout_alignBottom="@+id/menu_item_icon"
+	        android:layout_alignParentRight="true"
+	        android:layout_marginRight="60dip" >
+		    <TextView
+		            android:id="@+id/menu_tips"
+		            android:layout_width="22dip"
+		            android:layout_height="22dip"
+		            android:gravity="center"
+		            android:text="2"
+		            android:textColor="@color/slidingmenu_tips_color"
+		            android:textSize="16sp"
+		            android:background="@drawable/tips_square" />
+	    </LinearLayout>
+
+	    <TextView
+	        android:id="@+id/menu_item_name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="30dip"
+	        android:layout_alignParentBottom="true"
+	        android:layout_toRightOf="@+id/menu_item_icon"
+	        android:layout_marginLeft="10dip"
+	        android:text="Mailssenger"
+	        android:textColor="@color/slidingmenu_text_color"
+	        android:textSize="20sp" />
+
+    </RelativeLayout >   
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0.8dip"
+        android:background="@color/slidingmenu_divider_color" >
+    </LinearLayout>
+    
+</LinearLayout>

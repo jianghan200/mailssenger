@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<item
+    android:id="@+id/new_group"
+    android:title="New Group"
+    android:icon="@drawable/actionbar_icon_search"
+    android:showAsAction="ifRoom"
+    />
+
+<item
+    android:id="@+id/add_contact"
+    android:title="Add Contact"
+    android:icon="@drawable/actionbar_icon_search"
+    android:showAsAction="ifRoom"/>
+
+</menu>

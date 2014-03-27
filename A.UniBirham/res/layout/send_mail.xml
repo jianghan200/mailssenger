@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        tools:context=".MainListActivity" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:padding="2dp" >
+
+            <EditText
+                android:id="@+id/editTextTo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="5dp"
+                android:text="1129966399@qq.com"
+                android:hint="Email Addr"
+                android:inputType="textEmailAddress"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/editTextCcWho"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextTo"
+                android:layout_margin="5dp"
+                android:text="jaitch@163.com"
+                android:hint="CC Mail Addr"
+                android:inputType="textEmailAddress"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/editTextSubject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextCcWho"
+                android:layout_margin="5dp"
+                android:hint="Subject"
+                android:text="asdfjsdlf 终极快递付完款角度看刷得很快绝杀"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/editTextMessage"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@id/editTextSubject"
+                android:layout_margin="5dp"
+                android:gravity="top|left"
+                android:hint="type message here!"
+                android:text="说的婚纱入口即化刷卡的聚合科技四大皆空飞撒打发尽快呢收到"
+                android:inputType="textMultiLine" />
+
+            <Button
+                android:id="@+id/buttonSend"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:layout_below="@id/editTextMessage"
+                android:layout_margin="5dp"
+                android:text="Send" />
+
+            <Button
+                android:id="@+id/buttonAttachment"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:text="attachment" />
+        </RelativeLayout>
+    </ScrollView>
+
+</LinearLayout>
