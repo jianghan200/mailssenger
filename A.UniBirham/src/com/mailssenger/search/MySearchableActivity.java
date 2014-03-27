@@ -70,6 +70,7 @@ public class MySearchableActivity extends ActionBarActivity implements SearchVie
 
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) {
+	    	this.context = this;
 	    	super.onCreate(savedInstanceState);
 	    	mApplication = CommonApplication.getInstance();
 			mSpUtil = mApplication.getSpUtil();
@@ -100,8 +101,9 @@ public class MySearchableActivity extends ActionBarActivity implements SearchVie
 						@Override
 						public void onItemClick(AdapterView<?> parent, View view,
 								int position, long id) {
-							
+							L.d("hello");
 							String email = ((UserSortModel)adapter.getItem(position)).getEmail();
+							L.d("emial is "+email);
 							UserModel u = (UserModel) mUserDB.selectInfo(email);
 							L.d(u.toString());
 							mMsgDB.clearNewCount(u.getEmail());// 新消息置空

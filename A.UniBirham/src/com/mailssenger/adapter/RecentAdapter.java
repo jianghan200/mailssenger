@@ -143,7 +143,14 @@ public class RecentAdapter extends BaseAdapter {
 		}
 		
 		viewHolder.recent_listview_name.setText(name);//昵称
-		viewHolder.recent_listview_summary.setText(mGson.fromJson(item.getMessage(), MailModel.class).getSubject());
+		
+		if(item.getMessage().startsWith("{\"")){
+			viewHolder.recent_listview_summary.setText(mGson.fromJson(item.getMessage(), MailModel.class).getSubject());
+		}else{
+			viewHolder.recent_listview_summary.setText(item.getMessage());
+		}
+//		if(item.getMessage().startsWith("{email:"))
+//		
 		
 		viewHolder.recent_listview_time
 		.setText(TimeUtil.getChatTime(item.getTime()));
