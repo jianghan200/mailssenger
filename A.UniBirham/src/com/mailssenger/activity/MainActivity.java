@@ -3,6 +3,8 @@ package com.mailssenger.activity;
 
 import java.util.LinkedList;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -579,12 +581,19 @@ MyPushMessageReceiver.EventHandler, LogicObject, SearchView.OnQueryTextListener{
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    getMenuInflater().inflate(R.menu.main, menu);
 	 
-	    MenuItem searchItem = menu.findItem(R.id.action_search);
-	    mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-//        if(this instanceof MainActivity){
-        	 mSearchView.setOnQueryTextListener(this);
-//        }
+//	    MenuItem searchItem = menu.findItem(R.id.action_search);
+//	    mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+////        if(this instanceof MainActivity){
+//        	 mSearchView.setOnQueryTextListener(this);
+////        }
 	   
+        	 
+        	 SearchManager searchManager =  (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+             
+             MenuItem searchItem = menu.findItem(R.id.action_search);
+     	    mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+             mSearchView.setSearchableInfo( 
+             		searchManager.getSearchableInfo(getComponentName()));
         
 //        MenuItem addItem = menu.findItem(R.id.action_add);
 //	    mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
@@ -608,9 +617,9 @@ MyPushMessageReceiver.EventHandler, LogicObject, SearchView.OnQueryTextListener{
 			onSearchRequested();
 //			showPopup();
             return true;
-        case R.id.action_search:
-            mSearchView.setIconified(false);
-            return true;
+//        case R.id.action_search:
+//            mSearchView.setIconified(false);
+//            return true;
 //        case android.R.id.home:
 //        	Toast.makeText(this, "Hello ", Toast.LENGTH_LONG).show();
 //            break;
