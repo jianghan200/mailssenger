@@ -57,6 +57,7 @@ public class ChatActivity extends BaseActivity implements
 	private RecentDB mRecentDB;
 	private UserDB mUserDB;
 
+	//
 	private Button sendBtn;
 	private ImageButton mailBtn;
 	private boolean isFaceShow;
@@ -80,6 +81,8 @@ public class ChatActivity extends BaseActivity implements
 			if (msg.what == NEW_MESSAGE) {
 				
 			}
+			
+			
 			// String message = (String) msg.obj;
 			MessageModel chatMessage = (MessageModel) msg.obj;
 			//如果能跟用户聊天,那么数据库中一定有该用户
@@ -133,6 +136,8 @@ public class ChatActivity extends BaseActivity implements
 		if (hisUserModel == null) {// 如果为空，直接关闭
 			finish();
 		}
+		
+		setTitle(hisUserModel.getNickName());
 		
 		mApplication = CommonApplication.getInstance();
 		mSpUtil = mApplication.getSpUtil();
@@ -452,8 +457,8 @@ public class ChatActivity extends BaseActivity implements
 			
 			String header = "Dear " +hisUserModel.getNickName() +"\n";
 			String content = msgEt.getText().toString();
-			String footer = "\n\nBest wishes\n" + "Han Jiang" +"\n";
-			String infoString ="\n\n=======\n This mail is send by birham email client";
+			String footer = "\n\nBest wishes\n" + mSpUtil.getNick() +"\n";
+			String infoString ="\n\n=======\n This mail is send by Mailssenger";
 		
 			
 			String mailContent = header +content +footer+infoString;

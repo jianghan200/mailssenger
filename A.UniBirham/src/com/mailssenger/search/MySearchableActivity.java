@@ -84,57 +84,8 @@ public class MySearchableActivity extends ActionBarActivity implements SearchVie
 			dialog = (TextView) findViewById(R.id.contacts_dialog);
 			sortListView = (ListView) findViewById(R.id.contacts_listview);
 			
-			
-					//实例化汉字转拼音类
-					characterParser = CharacterParser.getInstance();
-					pinyinComparator = new PinyinComparator();
-					
-					SourceDateList = filledData();
-					// 根据a-z进行排序源数据
-					Collections.sort(SourceDateList, pinyinComparator);
-					adapter = new SortAdapter(this, SourceDateList);
-					sortListView.setAdapter(adapter);
-
-					
-					sortListView.setOnItemClickListener(new OnItemClickListener() {
-
-						@Override
-						public void onItemClick(AdapterView<?> parent, View view,
-								int position, long id) {
-							L.d("hello");
-							String email = ((UserSortModel)adapter.getItem(position)).getEmail();
-							L.d("emial is "+email);
-							UserModel u = (UserModel) mUserDB.selectInfo(email);
-							L.d(u.toString());
-							mMsgDB.clearNewCount(u.getEmail());// 新消息置空
-							
-							Intent toChatIntent = new Intent(context,ChatActivity.class);
-							toChatIntent.putExtra("user", u);
-							startActivity(toChatIntent);
-							
-							//这里要利用adapter.getItem(position)来获取当前position所对应的对象
-							Toast.makeText(context, ((UserSortModel)adapter.getItem(position)).getName(), Toast.LENGTH_SHORT).show();
-							Toast.makeText(context, ((UserSortModel)adapter.getItem(position)).getEmail(), Toast.LENGTH_SHORT).show();
-						}
-					});
-					
-					
-
-					sideBar.setTextView(dialog);
-					
-					//设置右侧触摸监听
-					sideBar.setOnTouchingLetterChangedListener(new OnTouchingLetterChangedListener() {
-						
-						@Override
-						public void onTouchingLetterChanged(String s) {
-							//该字母首次出现的位置
-							int position = adapter.getPositionForSection(s.charAt(0));
-							if(position != -1){
-								sortListView.setSelection(position);
-							}
-							
-						}
-					});
+			blank_search();
+		
 	       
 	        handleIntent(getIntent());
 	    }
@@ -143,6 +94,59 @@ public class MySearchableActivity extends ActionBarActivity implements SearchVie
 	    protected void onNewIntent(Intent intent) {
 	        
 	        handleIntent(intent);
+	    }
+	    
+	    private void blank_search(){
+	    	//实例化汉字转拼音类
+			characterParser = CharacterParser.getInstance();
+			pinyinComparator = new PinyinComparator();
+			
+			SourceDateList = filledData();
+			// 根据a-z进行排序源数据
+			Collections.sort(SourceDateList, pinyinComparator);
+			adapter = new SortAdapter(this, SourceDateList);
+			sortListView.setAdapter(adapter);
+
+			
+			sortListView.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					L.d("hello");
+					String email = ((UserSortModel)adapter.getItem(position)).getEmail();
+					L.d("emial is "+email);
+					UserModel u = (UserModel) mUserDB.selectInfo(email);
+					L.d(u.toString());
+					mMsgDB.clearNewCount(u.getEmail());// 新消息置空
+					
+					Intent toChatIntent = new Intent(context,ChatActivity.class);
+					toChatIntent.putExtra("user", u);
+					startActivity(toChatIntent);
+					
+					//这里要利用adapter.getItem(position)来获取当前position所对应的对象
+					Toast.makeText(context, ((UserSortModel)adapter.getItem(position)).getName(), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, ((UserSortModel)adapter.getItem(position)).getEmail(), Toast.LENGTH_SHORT).show();
+				}
+			});
+			
+			
+
+			sideBar.setTextView(dialog);
+			
+			//设置右侧触摸监听
+			sideBar.setOnTouchingLetterChangedListener(new OnTouchingLetterChangedListener() {
+				
+				@Override
+				public void onTouchingLetterChanged(String s) {
+					//该字母首次出现的位置
+					int position = adapter.getPositionForSection(s.charAt(0));
+					if(position != -1){
+						sortListView.setSelection(position);
+					}
+					
+				}
+			});
 	    }
 
 	    private void handleIntent(Intent intent) {
@@ -153,8 +157,10 @@ public class MySearchableActivity extends ActionBarActivity implements SearchVie
 	    	
 
 	        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-	            
-
+	            if(query!=null && !query.equals("")){
+	            	filterData(query);  
+	            }
+	        	
 	            Log.e("hello","search!!!");
 	            //use the query to search your data somehow
 	        }
@@ -224,6 +230,7 @@ public class MySearchableActivity extends ActionBarActivity implements SearchVie
 				}
 			}
 			
+								
 			// 根据a-z进行排序
 			Collections.sort(filterDateList, pinyinComparator);
 			adapter.updateListView(filterDateList);
@@ -255,9 +262,8 @@ public class MySearchableActivity extends ActionBarActivity implements SearchVie
 			 
 			    MenuItem searchItem = menu.findItem(R.id.action_search);
 			    mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-//		        if(this instanceof MainActivity){
-		        	 mSearchView.setOnQueryTextListener(this);
-//		        }
+			    mSearchView.setOnQueryTextListener(this);
+
 			   
 		        	 
 //		        	 SearchManager searchManager =  (SearchManager) getSystemService(Context.SEARCH_SERVICE);

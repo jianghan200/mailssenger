@@ -156,7 +156,7 @@ public class RecentAdapter extends BaseAdapter {
 		.setText(TimeUtil.getChatTime(item.getTime()));
 		
 		viewHolder.recent_listview_img
-		.setImageResource(CommonApplication.heads[2]);//头像设置
+		.setImageResource(CommonApplication.heads[item.getEmail().charAt(1)%18]);//头像设置
 		
 		//获得当点会话的聊天对象 邮箱
 		String hisEmail = item.getEmail();

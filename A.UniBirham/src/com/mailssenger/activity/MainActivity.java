@@ -3,6 +3,7 @@ package com.mailssenger.activity;
 
 import java.util.LinkedList;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -41,6 +42,7 @@ import com.mailssenger.model.ConversationModel;
 import com.mailssenger.model.MessageModel;
 import com.mailssenger.model.UserModel;
 import com.mailssenger.push.MyPushMessageReceiver;
+import com.mailssenger.search.MySearchableActivity;
 import com.mailssenger.service.MainService;
 import com.mailssenger.slidinglayer.SlidingLayer;
 import com.mailssenger.util.L;
@@ -53,7 +55,7 @@ import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UpdateStatus;
 
 public class MainActivity extends BaseActivity implements OnClickListener,
-MyPushMessageReceiver.EventHandler, LogicObject, SearchView.OnQueryTextListener{
+MyPushMessageReceiver.EventHandler, LogicObject, SearchView.OnQueryTextListener,PopupMenu.OnMenuItemClickListener{
 	
 	//添加LogicObject之后才可以添加任务
 	private static String TAG = " >MainActivity";
@@ -321,6 +323,9 @@ MyPushMessageReceiver.EventHandler, LogicObject, SearchView.OnQueryTextListener{
 					
 					//只有存在好友关系,才可以发文本信息,所以受到文本消息的时候,用户必然存在
 					UserModel user = mUserDB.selectInfo(email);
+					if(user!=null){
+						
+					}
 					
 					L.e(TAG,mGson.toJson(msgItem));
 					L.e(TAG,"save msg");
@@ -562,8 +567,10 @@ MyPushMessageReceiver.EventHandler, LogicObject, SearchView.OnQueryTextListener{
 		mRecentAdapter.setData(mRecentDatas);
 		mRecentAdapter.notifyDataSetChanged();
     }
-
-	
+    
+    
+    
+	//this for the search
 	@Override
     public boolean onQueryTextSubmit(String s) {
         Toast.makeText(this, s, Toast.LENGTH_LONG).show();
@@ -572,6 +579,7 @@ MyPushMessageReceiver.EventHandler, LogicObject, SearchView.OnQueryTextListener{
  
     @Override
     public boolean onQueryTextChange(String s) {
+    	
         return false;
     }
     
@@ -587,18 +595,16 @@ MyPushMessageReceiver.EventHandler, LogicObject, SearchView.OnQueryTextListener{
 //        	 mSearchView.setOnQueryTextListener(this);
 ////        }
 	   
-        	 
-        	 SearchManager searchManager =  (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//        search view	 
+        	SearchManager searchManager =  (SearchManager) getSystemService(Context.SEARCH_SERVICE);
              
-             MenuItem searchItem = menu.findItem(R.id.action_search);
+            MenuItem searchItem = menu.findItem(R.id.action_search);
      	    mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-             mSearchView.setSearchableInfo( 
+            mSearchView.setSearchableInfo( 
              		searchManager.getSearchableInfo(getComponentName()));
-        
-//        MenuItem addItem = menu.findItem(R.id.action_add);
-//	    mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-//	    return true;
-        
+	    
+	    
+
 	    return true;
 	    
 	    
@@ -614,12 +620,17 @@ MyPushMessageReceiver.EventHandler, LogicObject, SearchView.OnQueryTextListener{
 		switch (item.getItemId()) {
 		
 		case R.id.action_add:
-			onSearchRequested();
-//			showPopup();
+			
+    		
+			showPopup();
             return true;
-//        case R.id.action_search:
+        case R.id.action_search:
+        	Intent intent = new Intent(context, MySearchableActivity.class);
+    		context.startActivity(intent);
+//			onSearchRequested();
+//			startSearch("", false, null, false);
 //            mSearchView.setIconified(false);
-//            return true;
+            return true;
 //        case android.R.id.home:
 //        	Toast.makeText(this, "Hello ", Toast.LENGTH_LONG).show();
 //            break;
@@ -645,6 +656,28 @@ MyPushMessageReceiver.EventHandler, LogicObject, SearchView.OnQueryTextListener{
         popup.show();
 
     }
+
+	@Override
+	public boolean onMenuItemClick(MenuItem item) {
+		
+		switch (item.getItemId()) {
+			case R.id.add_contact:
+				Toast.makeText(context, "not implemented yet,please use send new mail",  Toast.LENGTH_SHORT).show();
+				break;
+			case R.id.new_group:
+				Toast.makeText(context, "not implemented yet",  Toast.LENGTH_SHORT).show();
+				break;
+				
+			case R.id.new_mail:
+				Intent intent = new Intent(context, SendMailActivity.class);
+	    		context.startActivity(intent);
+				break;
+		}
+		
+			
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }
 

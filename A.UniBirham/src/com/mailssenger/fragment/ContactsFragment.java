@@ -61,7 +61,7 @@ public class ContactsFragment extends Fragment{
 	private SideBar sideBar;
 	private TextView dialog;
 	private SortAdapter adapter;
-	private ClearEditText mClearEditText;
+
 	//联系人相关工具
 	private CharacterParser characterParser;
 	private List<UserSortModel> SourceDateList;
@@ -90,7 +90,7 @@ public class ContactsFragment extends Fragment{
 		sideBar = (SideBar) view.findViewById(R.id.contacts_sidebar);
 		dialog = (TextView) view.findViewById(R.id.contacts_dialog);
 		sortListView = (ListView) view.findViewById(R.id.contacts_listview);
-		mClearEditText = (ClearEditText) view.findViewById(R.id.contacts_filter_edit);
+		
 		
 		return view;
 	}
@@ -154,24 +154,24 @@ public class ContactsFragment extends Fragment{
 		});
 
 	
-		//根据输入框输入值的改变来过滤搜索
-		mClearEditText.addTextChangedListener(new TextWatcher() {
-			
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				//当输入框里面的值为空，更新为原来的列表，否则为过滤数据列表
-				filterData(s.toString());
-			}
-			
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-			}
-			
-			@Override
-			public void afterTextChanged(Editable s) {
-			}
-		});
+//		//根据输入框输入值的改变来过滤搜索
+//		mClearEditText.addTextChangedListener(new TextWatcher() {
+//			
+//			@Override
+//			public void onTextChanged(CharSequence s, int start, int before, int count) {
+//				//当输入框里面的值为空，更新为原来的列表，否则为过滤数据列表
+//				filterData(s.toString());
+//			}
+//			
+//			@Override
+//			public void beforeTextChanged(CharSequence s, int start, int count,
+//					int after) {
+//			}
+//			
+//			@Override
+//			public void afterTextChanged(Editable s) {
+//			}
+//		});
 
 	}
 	

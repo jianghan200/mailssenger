@@ -62,7 +62,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
             android:background="@drawable/login_bright_btn"
-            android:shadowColor="#80000000"
+            android:shadowColor="@color/app_main_color"
             android:shadowRadius="6"
             android:text="@string/login"
             android:textColor="#ffffff"

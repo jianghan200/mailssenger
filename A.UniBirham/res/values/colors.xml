@@ -9,10 +9,6 @@
     <color name="slidingmenu_tips_color">@android:color/white</color>
     <color name="slidingmenu_divider_color">#a8a8a8</color>
     
-    
-    
-    
-    
     <color name="no_color">#00000000</color>
     <color name="bg_color">#F4F3F3</color>
     <color name="bg_color_deep">#E5E5E5</color>

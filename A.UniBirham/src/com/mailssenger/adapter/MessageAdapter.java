@@ -132,6 +132,7 @@ public class MessageAdapter extends BaseAdapter {
 			// L.i("time: " + item.getDate());
 			holder.time.setVisibility(View.VISIBLE);
 
+			holder.head.setImageResource(CommonApplication.heads[item.getEmail().charAt(1)%18]);//头像设置
 			if ( !mSpUtil.getShowHead()) {
 				holder.head.setVisibility(View.GONE);
 			}
@@ -208,6 +209,7 @@ public class MessageAdapter extends BaseAdapter {
 				holder.time.setVisibility(View.VISIBLE);
 	//			holder.head.setBackgroundResource(CommonApplication.heads[item
 	//					.getHeadImg()]);
+				holder.head.setImageResource(CommonApplication.heads[item.getEmail().charAt(1)%18]);//头像设置
 				if ( !mSpUtil.getShowHead()) {
 					holder.head.setVisibility(View.GONE);
 				}

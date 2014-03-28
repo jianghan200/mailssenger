@@ -12,8 +12,5 @@
 	    android:title="@string/action_add"
 	    android:icon="@drawable/actionbar_add"
 	    app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+
 </menu>

@@ -18,7 +18,7 @@ import com.mailssenger.util.SharedPreferencesUtil;
 
 public class UserInfoActivity extends BaseActivity {
 
-    private static final String TAG = "NoBoringActionBarActivity";
+    private static final String TAG = "UserInfoActionBarActivity";
 
     private KenBurnsView mHeaderPicture;
     private ImageView mHeaderLogo;
@@ -49,9 +49,8 @@ public class UserInfoActivity extends BaseActivity {
   		mMsgDB = mApplication.getMessageDB();
   		mRecentDB = mApplication.getRecentDB();
 
-  		
 
-        setContentView(R.layout.activity_noboringactionbar);
+        setContentView(R.layout.activity_user_info);
 
         mHeader = findViewById(R.id.header);
         mHeaderPicture = (KenBurnsView) findViewById(R.id.header_picture);
@@ -65,8 +64,6 @@ public class UserInfoActivity extends BaseActivity {
         
 		mHeaderInfo = (TextView)findViewById(R.id.header_info);
 		mHeaderInfo.setText(hisUserModel.getEmail());
-		
-		
 		
 
     }

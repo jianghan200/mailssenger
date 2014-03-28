@@ -12,4 +12,9 @@
     android:icon="@drawable/actionbar_icon_search"
     android:showAsAction="ifRoom"/>
 
+<item
+    android:id="@+id/new_mail"
+    android:title="New mail"
+    android:showAsAction="ifRoom"/>
+
 </menu>

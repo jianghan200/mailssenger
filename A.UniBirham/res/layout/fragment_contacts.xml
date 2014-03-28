@@ -5,16 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-   <com.mailssenger.contacts.ClearEditText
-        android:id="@+id/contacts_filter_edit"
-        android:layout_marginTop="5dip"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/search_bar_edit_selector"
-        android:drawableLeft="@drawable/search_bar_icon_normal"
-        android:hint="Search by keyword"
-        android:singleLine="true"
-        android:textSize="15.0dip" />
     
     <FrameLayout
         android:layout_width="match_parent"
