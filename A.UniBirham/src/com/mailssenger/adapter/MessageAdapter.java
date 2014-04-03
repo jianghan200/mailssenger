@@ -1,7 +1,5 @@
 package com.mailssenger.adapter;
 
-import com.mailssenger.R;
-
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,6 +24,7 @@ import android.widget.TextView.BufferType;
 
 import com.google.gson.Gson;
 import com.mailssenger.CommonApplication;
+import com.mailssenger.R;
 import com.mailssenger.activity.MailContentActivity;
 import com.mailssenger.activity.UserInfoActivity;
 import com.mailssenger.model.MailModel;

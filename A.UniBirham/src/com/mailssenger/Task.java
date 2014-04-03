@@ -83,7 +83,7 @@ public class Task {
 		return runMethod;
 	}
 	
-	/*
+	/**
 	 * get all the parameters
 	 */
 	public Object[] getParams() {

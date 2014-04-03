@@ -1,12 +1,12 @@
 package com.mailssenger.util;
 
-import com.mailssenger.CommonApplication;
-import com.mailssenger.push.BaiduPush;
-
-import com.mailssenger.R;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.text.TextUtils;
+
+import com.mailssenger.CommonApplication;
+import com.mailssenger.R;
+import com.mailssenger.push.BaiduPush;
 
 
 public class SendMsgAsyncTask {

@@ -1,7 +1,5 @@
 package com.mailssenger.adapter;
 
-import com.mailssenger.R;
-
 import java.util.LinkedList;
 
 import android.content.Context;
@@ -12,12 +10,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.mailssenger.CommonApplication;
+import com.mailssenger.R;
 import com.mailssenger.activity.ChatActivity;
 import com.mailssenger.db.MessageDB;
 import com.mailssenger.db.RecentDB;
@@ -193,7 +191,7 @@ public class RecentAdapter extends BaseAdapter {
 
 		return convertView;
 	}
-
+ 
 	final class RecentViewHolder {
 		public RelativeLayout recent_listview_row;
 		public ImageView recent_listview_img;

@@ -50,7 +50,7 @@ public class UserInfoActivity extends BaseActivity {
   		mRecentDB = mApplication.getRecentDB();
 
 
-        setContentView(R.layout.activity_user_info);
+        setContentView(R.layout.user_info);
 
         mHeader = findViewById(R.id.header);
         mHeaderPicture = (KenBurnsView) findViewById(R.id.header_picture);

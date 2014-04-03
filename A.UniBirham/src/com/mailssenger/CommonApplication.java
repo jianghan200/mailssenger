@@ -20,6 +20,7 @@ import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.widget.RemoteViews;
 
 import com.baidu.frontia.FrontiaApplication;
@@ -144,6 +145,9 @@ public class CommonApplication extends Application {
 		activityManager = ActivityManager.getActivityManager(this); // 实例化活动管理类
 		dbOperation = new MailDB(this);
 		UID_SET = dbOperation.loadUIDSet("inbox");
+		
+//		// Start Notification Service
+//		startNotificationService();	
 	}
 
 	public synchronized static CommonApplication getInstance() {
@@ -348,6 +352,37 @@ public class CommonApplication extends Application {
 
 		mNotificationManager.notify(MyPushMessageReceiver.NOTIFY_ID,
 				mNotification);
+	}
+	
+	/**
+	 * Start the notification service
+	 * call the notification every 5 mins
+	 */
+	public void startNotificationService() {
+		
+//		Intent it = new Intent();
+//		it.setClass(this, NotificationService.class);
+//		startService(it);
+		
+		CommonApplication.debug("I am startNotificationService");
+		// set the alarm to run periodly
+		PendingIntent mAlarmSender = PendingIntent.getService(
+				getApplicationContext(), 0, new Intent(getApplicationContext(),
+						NotificationService.class), 0);
+
+		CommonApplication.debug("I am starting the ns!");
+		long firstTime = SystemClock.elapsedRealtime();
+		
+		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+		// this code is unvaild under xiaomi phone
+		// am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime,
+		// 1 * 1000, mAlarmSender);
+		
+		// make time related to system time so that can wake up from sleep
+		am.setRepeating(AlarmManager.RTC_WAKEUP, firstTime, 2*60 * 1000,
+				mAlarmSender);
+		// check every three minutes!
+
 	}
 
 }
