@@ -178,7 +178,6 @@
         <!-- ShareActionProvider attributes -->
         <item name="activityChooserViewStyle">@style/Widget.AppCompat.ActivityChooserView
         </item>
-
     </style>
 
 
@@ -189,5 +188,5 @@
     <style name="Theme.AppCompat.CompactMenu.Dialog"
            parent="Theme.AppCompat.Base.CompactMenu.Dialog">
     </style>
-
+	
 </resources>
