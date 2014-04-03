@@ -50,7 +50,7 @@ public class WelcomeActivity extends Activity {
 //					Intent mainIntent = new Intent(SplashActivity.this,
 //							 MainListActivity.class);
 					Intent mainIntent = new Intent(WelcomeActivity.this,
-							 MainActivity.class);
+							LoginActivity.class);
 					WelcomeActivity.this.startActivity(mainIntent);
 					WelcomeActivity.this.finish();
 					

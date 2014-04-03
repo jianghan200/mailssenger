@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    	xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+        <item android:id="@+id/action_help_info" 
+            android:layout_height="wrap_content" 
+            android:layout_width="wrap_content" 
+            android:title="@string/action_help_info" 
+            android:icon="@drawable/ic_action_about"
+            app:showAsAction="ifRoom"
+            ></item>
+</menu>

@@ -6,8 +6,8 @@
     <color name="app_main_color_shadow">#a15e51</color>
     <color name="app_main_color_pressed">#bf7567</color>
     <color name="app_main_color_shadow_pressed">#a15e51</color>
-    <color name="app_main_color_disabled">#deb8b1</color> 
-    <color name="app_main_color_shadow_disabled">#af918b</color> 
+    <color name="app_main_color_disabled">#deb8b1</color>
+    <color name="app_main_color_shadow_disabled">#af918b</color>
     <color name="background_color">#F4F3F3</color>
     <color name="actionbar_title_color">@android:color/white</color>
     <color name="slidingmenu_text_color">#5a5a5a</color>
