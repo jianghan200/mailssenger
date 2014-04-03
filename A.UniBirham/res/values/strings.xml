@@ -8,7 +8,7 @@
      <string name="search_hint">Search form here</string>
      <string name="action_add">add</string>
     <string name="hello_world">Hello world!</string>
-    <string name="signin_label_email">Bham Email Address</string>
+    <string name="signin_label_email">Gmail/163mail/Bham Mail Address</string>
     <string name="signin_password">Email password</string>
     <string name="signin_repassword">Repeat password</string>
     <string name="signin">User License</string>
@@ -88,5 +88,8 @@
     <string name="pull_to_refresh_from_bottom_pull_label">@string/pull_to_refresh_pull_label</string>
     <string name="pull_to_refresh_from_bottom_release_label">@string/pull_to_refresh_release_label</string>
     <string name="pull_to_refresh_from_bottom_refreshing_label">@string/pull_to_refresh_refreshing_label</string>
+    <string name="action_help_info">help</string>
+    <string name="login_help_info_detail">The login acount is your gmail or 163 mail,our service is based on them.
+If you have some question when you use this product ,please send e-mail to 	</string>
     
 </resources>

@@ -17,19 +17,33 @@ import com.mailssenger.util.NetUtil;
 import com.mailssenger.util.SharedPreferencesUtil;
 import com.mailssenger.util.T;
 import com.mailssenger.util.UIHelper;
-
 import com.mailssenger.R;
+import android.R.layout;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
+import android.text.Editable;
+import android.text.Layout;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class LoginActivity extends BaseActivity implements LogicObject, MyPushMessageReceiver.EventHandler{
@@ -41,11 +55,15 @@ public class LoginActivity extends BaseActivity implements LogicObject, MyPushMe
      private Button btnsignin;
      LoginActivity context = null;
      private ImageView jmuImageView;
-     private ImageButton btnclsEdittext;
+     private ImageButton btnclsAccount;
+     private ImageButton btnclsPW;
+     private LinearLayout lyAccount;
+     private LinearLayout lyPW;
+     private LinearLayout lyHelp;
      Dialog dialog;
      
      boolean hasRetry = false;
-     
+     boolean isHelpShow = false;
 	  //对话框,链接服务器
 	 private Dialog mConnectServerDialog;
 	 private SharedPreferencesUtil mSpUtil;
@@ -68,12 +86,20 @@ public class LoginActivity extends BaseActivity implements LogicObject, MyPushMe
            etAccount = (EditText) findViewById(R.id.et_log_accout );
            etPW = (EditText) findViewById(R.id. et_log_psw);
            btnLogin = (Button) findViewById(R.id.btn_Log_in );
-           btnsignin = (Button) findViewById(R.id.btn_sign_in );
-           btnclsEdittext=(ImageButton) findViewById(R.id.btn_clear );
            etAccount.setText(CommonApplication.ACCOUNT);
           
            mSpUtil = CommonApplication.getInstance().getSpUtil();
            mUserDB = CommonApplication.getInstance().getUserDB();
+           
+           btnclsAccount=(ImageButton) findViewById(R.id.btn_clear );
+           btnclsPW=(ImageButton) findViewById(R.id.btn_clear2 );
+           btnclsAccount.setVisibility(View.GONE);
+           btnclsPW.setVisibility(View.GONE);
+           
+           lyAccount=(LinearLayout)findViewById(R.id.et_ly_account);
+           lyPW=(LinearLayout)findViewById(R.id.et_ly_pwd);
+           
+           lyHelp=(LinearLayout)findViewById(R.id.login_gap);
      }
 
      @Override
@@ -81,10 +107,13 @@ public class LoginActivity extends BaseActivity implements LogicObject, MyPushMe
            // TODO Auto-generated method stub
            super.onCreate(savedInstanceState);
 
-          setContentView(R.layout. log_in);
+          setContentView(R.layout.log_in);
           context = this;
           //set up the  view
           InitConfig();
+          
+          ActionBar actionBar = getSupportActionBar();  
+          actionBar.setDisplayHomeAsUpEnabled(false);  
           
           mHandler = new Handler();
           
@@ -104,6 +133,32 @@ public class LoginActivity extends BaseActivity implements LogicObject, MyPushMe
 //         etPW.setText( "J742515q");
 
            //login listeners
+  		
+  		etAccount.setOnFocusChangeListener(new OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View arg0, boolean isFocus) {
+				// TODO Auto-generated method stub
+				if (isFocus) {
+					lyAccount.setBackgroundResource(R.drawable.basic_edittext_bg);
+				}else{
+					lyAccount.setBackgroundResource(R.drawable.basic_edittext_bg_default);
+				}
+			}
+		});
+  		etPW.setOnFocusChangeListener(new OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View arg0, boolean isFocus) {
+				// TODO Auto-generated method stub
+				if (isFocus) {
+					lyPW.setBackgroundResource(R.drawable.basic_edittext_bg);
+				}else{
+					lyPW.setBackgroundResource(R.drawable.basic_edittext_bg_default);
+				}
+			}
+		});
+  		
            btnLogin.setOnClickListener( new OnClickListener() {
 
                @Override
@@ -204,27 +259,136 @@ public class LoginActivity extends BaseActivity implements LogicObject, MyPushMe
 
           });
 
-           btnsignin.setOnClickListener(new OnClickListener() {
-
-               @Override
-               public void onClick(View arg0) {
-                    // TODO Auto-generated method stub
-//                 UIHelper.showSignInActivity(context);
-              }
-          });
           
            //clear edit text listener
-           btnclsEdittext.setOnClickListener(new OnClickListener() {
-
+           btnclsAccount.setOnClickListener(new OnClickListener() {
                @Override
                public void onClick(View v) {
                     // TODO Auto-generated method stub
                     etAccount.setText("" );
               }
           });
+           btnclsPW.setOnClickListener(new OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                    // TODO Auto-generated method stub
+                    etPW.setText("" );
+              }
+          });
+           etAccount.addTextChangedListener(new TextWatcher() {
+
+	   			@Override
+	   			public void onTextChanged(CharSequence s, int start, int before,
+	   					int count) {
+	   				if (s.length() > 0) {
+	   					btnclsAccount.setVisibility(View.VISIBLE);
+	   				} else {
+	   					btnclsAccount.setVisibility(View.GONE);
+	   				}
+	   			}
+	
+	   			@Override
+	   			public void beforeTextChanged(CharSequence s, int start, int count,
+	   					int after) {
+	   				// TODO Auto-generated method stub
+	   			}
+	
+	   			@Override
+	   			public void afterTextChanged(Editable s) {
+	   				// TODO Auto-generated method stub
+	   			}
+   			});
+           etPW.addTextChangedListener(new TextWatcher() {
+
+	   			@Override
+	   			public void onTextChanged(CharSequence s, int start, int before,
+	   					int count) {
+	   				if (s.length() > 0) {
+	   					btnclsPW.setVisibility(View.VISIBLE);
+	   				} else {
+	   					btnclsPW.setVisibility(View.GONE);
+	   				}
+	   			}
+	
+	   			@Override
+	   			public void beforeTextChanged(CharSequence s, int start, int count,
+	   					int after) {
+	   				// TODO Auto-generated method stub
+	   			}
+	
+	   			@Override
+	   			public void afterTextChanged(Editable s) {
+	   				// TODO Auto-generated method stub
+	   			}
+  			});
 
      }
 
+     
+     @Override
+     public boolean onCreateOptionsMenu(Menu menu) {
+         // Inflate the menu items for use in the action bar
+         MenuInflater inflater = getMenuInflater();
+         inflater.inflate(R.menu.login, menu);
+         return super.onCreateOptionsMenu(menu);
+     }
+     
+     public boolean onOptionsItemSelected(MenuItem item) {  
+    	    switch (item.getItemId()) {  
+    	    case R.id.action_help_info: 
+    	    	AnimationSet aSet = new AnimationSet(true);
+    	    	AlphaAnimation alp = new AlphaAnimation(0.0f,1.0f);
+    	    	lyHelp.setVisibility(View.VISIBLE);
+    	    	aSet.setFillAfter(true);
+    	    	if(!isHelpShow){
+        	    	
+                    alp.setDuration(500);
+                    alp.setFillAfter(true);
+                    
+                    ScaleAnimation ascl =new ScaleAnimation(0.0f, 1.1f, 0.0f, 1.1f, 
+                    		Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f); 
+                    ascl.setDuration(400);
+                    ascl.setFillAfter(true);
+                    
+                    ScaleAnimation ascl2 =new ScaleAnimation(1.0f, 0.90909f, 1.0f, 0.90909f, 
+                    		Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f); 
+                    ascl2.setDuration(100);
+                    ascl2.setStartOffset(400);
+                    ascl2.setFillAfter(true);
+                    
+                    aSet.addAnimation(alp);
+                    aSet.addAnimation(ascl);
+                    aSet.addAnimation(ascl2);
+                    
+                    lyHelp.startAnimation(aSet);
+    	    	}else{
+                    
+                    ScaleAnimation ascl =new ScaleAnimation(1.0f, 1.1f, 1.0f, 1.1f, 
+                    		Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f); 
+                    ascl.setDuration(100);
+                    ascl.setFillAfter(true);
+                    
+                    ScaleAnimation ascl2 =new ScaleAnimation(1.0f, 0.9090909f, 1.0f, 0.9090909f, 
+                    		Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f); 
+                    ascl2.setDuration(100);
+                    ascl2.setStartOffset(100);
+                    ascl2.setFillAfter(true);
+                    
+                    aSet.addAnimation(ascl);
+                    aSet.addAnimation(ascl2);
+                    
+                    lyHelp.startAnimation(aSet);
+    	    	}
+    	    	
+    	    	
+                isHelpShow = true;
+    	        return true;  
+    	    default:  
+    	        return super.onOptionsItemSelected(item);  
+    	    }  
+    	}
+     
+     
      @Override
      public void refresh(Object... args) {
     	 btnLogin.setClickable(true);

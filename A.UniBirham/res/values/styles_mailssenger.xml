@@ -32,9 +32,7 @@
 		<item name="homeAsUpIndicator">@drawable/actionbar_indicator</item>
                 <!-- Light.DarkActionBar specific -->
         <item name="actionBarWidgetTheme">@style/Theme.Mailssenger.Widget</item>
-
     </style>
-
     <style name="ActionBar.Solid.Mailssenger" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="background">@drawable/ab_solid_mailssenger</item>
         <item name="backgroundStacked">@drawable/ab_stacked_solid_mailssenger</item>
