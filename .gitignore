@@ -1,10 +1,10 @@
-/A.UniBirham/bin/
-/A.UniBirham/gen/
 /library*/
 /android*/
 *.class
 .classpath
 .project
+/A.UniBirham/bin/
+/A.UniBirham/gen/
 /library-afinal/bin/
 /library-afinal/gen/
 /library-SlidingMenu/bin/
@@ -13,4 +13,15 @@
 /library-aFileChooser/gen/
 /android-support-v7-appcompat/bin/
 /android-support-v7-appcompat/gen/
+
+/A.UniBirham/bin
+/A.UniBirham/gen
+/library-afinal/bin
+/library-afinal/gen
+/library-SlidingMenu/bin
+/library-SlidingMenu/gen
+/library-aFileChooser/bin
+/library-aFileChooser/gen
+/android-support-v7-appcompat/bin
+/android-support-v7-appcompat/gen
 
