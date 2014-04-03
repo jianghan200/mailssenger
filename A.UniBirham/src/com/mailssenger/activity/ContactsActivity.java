@@ -1,47 +1,35 @@
 package com.mailssenger.activity;
 
-import com.mailssenger.R;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.google.gson.Gson;
 import com.mailssenger.CommonApplication;
-import com.mailssenger.activity.ChatActivity;
-import com.mailssenger.adapter.RecentAdapter;
+import com.mailssenger.R;
 import com.mailssenger.contacts.CharacterParser;
 import com.mailssenger.contacts.ClearEditText;
 import com.mailssenger.contacts.PinyinComparator;
 import com.mailssenger.contacts.SideBar;
+import com.mailssenger.contacts.SideBar.OnTouchingLetterChangedListener;
 import com.mailssenger.contacts.SortAdapter;
 import com.mailssenger.contacts.UserSortModel;
-import com.mailssenger.contacts.SideBar.OnTouchingLetterChangedListener;
 import com.mailssenger.db.MessageDB;
-import com.mailssenger.db.RecentDB;
 import com.mailssenger.db.UserDB;
-import com.mailssenger.model.ConversationModel;
 import com.mailssenger.model.UserModel;
 import com.mailssenger.util.L;
 import com.mailssenger.util.SharedPreferencesUtil;

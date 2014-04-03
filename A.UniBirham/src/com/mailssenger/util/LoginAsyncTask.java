@@ -1,12 +1,11 @@
 package com.mailssenger.util;
 
-import com.mailssenger.CommonApplication;
-import com.mailssenger.mail.MailAccount;
-import com.mailssenger.push.BaiduPush;
-
-import com.mailssenger.R;
 import android.os.AsyncTask;
 import android.os.Handler;
+
+import com.mailssenger.CommonApplication;
+import com.mailssenger.R;
+import com.mailssenger.mail.MailAccount;
 
 
 public class LoginAsyncTask {

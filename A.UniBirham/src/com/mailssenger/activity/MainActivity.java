@@ -239,12 +239,12 @@ MyPushMessageReceiver.EventHandler, LogicObject, SearchView.OnQueryTextListener,
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		mScreenWidth = dm.widthPixels;// 获取屏幕分辨率宽度
+		
 		slidingMenu = new SlidingMenu(context);
 		slidingMenu.setMode(SlidingMenu.LEFT);
 		
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		
-
 		slidingMenu.setShadowDrawable(R.drawable.slidingmenu_shadow);
 		slidingMenu.setShadowWidth(mScreenWidth / 40);// 设置阴影宽度
 		slidingMenu.setBehindOffset(mScreenWidth / 8);// 设置菜单宽度

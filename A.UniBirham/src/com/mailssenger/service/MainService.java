@@ -12,13 +12,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.mailssenger.CommonApplication;
-import com.mailssenger.LogicObject;
-import com.mailssenger.Task;
-
-
-
-import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +19,10 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
+
+import com.mailssenger.CommonApplication;
+import com.mailssenger.LogicObject;
+import com.mailssenger.Task;
 
 public class MainService extends Service implements Runnable {
 
