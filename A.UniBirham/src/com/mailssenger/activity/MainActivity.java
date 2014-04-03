@@ -59,7 +59,7 @@ MyPushMessageReceiver.EventHandler, LogicObject, SearchView.OnQueryTextListener,
 	
 	//添加LogicObject之后才可以添加任务
 	private static String TAG = " >MainActivity";
-	private MainActivity context;
+	private MainActivity context;//hello
 	
 	ConvFragment convFragment = null;
 //	GroupsFragment groupsFragment;
