@@ -1,15 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mailssenger"
-    android:versionCode="6"
-    android:versionName="1.0" >
+<?xml version="1.0" encoding="utf-8"?><manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.mailssenger" android:versionCode="6" android:versionName="1.0">
 
-    <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="17" />
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="19" />
     
     <!-- Biadu Push service  Permission  Start-->
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -22,83 +16,52 @@
     <!-- Baidu Push service  Permission  End-->
 	
     <!-- Umeng Statistic Permission Start -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" >
+    <uses-permission android:name="android.permission.READ_PHONE_STATE">
     </uses-permission>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- Umeng Statistic Permission End -->
 
     <!-- Network Permission Start -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" >
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE">
     </uses-permission>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- Network Permission End -->
 
 
-    <application
-        android:name="CommonApplication"
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/Theme.Mailssenger"
-        android:screenOrientation="portrait" >
+    <application android:name="CommonApplication" android:allowBackup="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:theme="@style/Theme.Mailssenger" android:screenOrientation="portrait">
         
         <!-- declare the default searchable Activity for the whole app -->
-        <meta-data
-            android:name="android.app.default_searchable"
-            android:value=".search.MySearchableActivity" />
+        <meta-data android:name="android.app.default_searchable" android:value=".search.MySearchableActivity" />
         
-        <activity
-            android:name="com.mailssenger.activity.WelcomeActivity"
-            android:label="@string/app_name" >
+        <activity android:name="com.mailssenger.activity.WelcomeActivity" android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         
-        <activity
-            android:name="com.mailssenger.activity.BaseActivity">
+        <activity android:name="com.mailssenger.activity.BaseActivity">
         </activity>
         
-        <activity
-            android:name="com.mailssenger.activity.MainActivity"
-            android:screenOrientation="portrait">
+        <activity android:name="com.mailssenger.activity.MainActivity" android:screenOrientation="portrait">
         </activity>
         
-        <activity
-            android:name="com.mailssenger.activity.LoginActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden" >
+        <activity android:name="com.mailssenger.activity.LoginActivity" android:screenOrientation="portrait" android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
-        <activity
-            android:name="com.mailssenger.activity.MailContentActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden" >
+        <activity android:name="com.mailssenger.activity.MailContentActivity" android:screenOrientation="portrait" android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
-        <activity
-            android:name="com.mailssenger.activity.SendMailActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden" >
+        <activity android:name="com.mailssenger.activity.SendMailActivity" android:screenOrientation="portrait" android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
         
-        <activity
-            android:name="com.mailssenger.activity.ChatActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden" >
+        <activity android:name="com.mailssenger.activity.ChatActivity" android:screenOrientation="portrait" android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
         
-        <activity
-            android:name="com.mailssenger.activity.UserInfoActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden" >
+        <activity android:name="com.mailssenger.activity.UserInfoActivity" android:screenOrientation="portrait" android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
         
-        <activity
-            android:name="com.ipaulpro.afilechooser.FileChooserActivity"
-            android:icon="@drawable/ic_chooser"
-            android:label="@string/chooser_title" >
+        <activity android:name="com.ipaulpro.afilechooser.FileChooserActivity" android:icon="@drawable/ic_chooser" android:label="@string/chooser_title">
             <intent-filter>
                 <action android:name="android.intent.action.GET_CONTENT" />
 
@@ -111,25 +74,22 @@
         
         
         
-        <activity android:name=".search.MySearchableActivity" >
+        <activity android:name=".search.MySearchableActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
 
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/search" >
+            <meta-data android:name="android.app.searchable" android:resource="@xml/search">
             </meta-data>
         </activity>
-        <provider android:name="com.mailssenger.search.SearchSuggestionProvider"
-            android:authorities="com.mailssenger.search.SearchSuggestionProvider" />
+        <provider android:name="com.mailssenger.search.SearchSuggestionProvider" android:authorities="com.mailssenger.search.SearchSuggestionProvider" />
         
      
-        <service android:name="com.mailssenger.service.MainService" >
+        <service android:name="com.mailssenger.service.MainService">
         </service>
-        <service android:name="com.mailssenger.service.NotificationService" >
+        <service android:name="com.mailssenger.service.NotificationService">
         </service>
-        <service android:name="com.mailssenger.service.InfoRetrieveService" >
+        <service android:name="com.mailssenger.service.InfoRetrieveService">
         </service>
 
         <!-- Umeng Feedback Start -->
@@ -137,17 +97,12 @@
         <activity android:name="com.umeng.fb.ContactActivity" />
         <!-- Umeng Feedback End -->
         
-		<activity 
-		    android:name="com.umeng.update.UpdateDialogActivity"
-		    android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+		<activity android:name="com.umeng.update.UpdateDialogActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar">
 		</activity>
 
 
         <!--  Umeng Auto Update Start -->
-        <service
-            android:name="com.umeng.common.net.DownloadingService"
-            android:exported="true"
-            android:process=":DownloadingService" >
+        <service android:name="com.umeng.common.net.DownloadingService" android:exported="true" android:process=":DownloadingService">
         </service>
         <!-- Umeng Auto Update End -->
         
@@ -168,8 +123,7 @@
 		
 		<!-- push service start -->
 		<!--  用于接收系统消息以保证 PushService 正常运行  -->
-		<receiver android:name="com.baidu.android.pushservice.PushServiceReceiver"
-			android:process=":bdservice_v1">
+		<receiver android:name="com.baidu.android.pushservice.PushServiceReceiver" android:process=":bdservice_v1">
 			<intent-filter>
 				<action android:name="android.intent.action.BOOT_COMPLETED" />
 				<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -180,49 +134,34 @@
 		
 
 		<!-- Push 服务 接收客户端发送的各种请求-->
-		<receiver android:name="com.baidu.android.pushservice.RegistrationReceiver"
-		android:process=":bdservice_v1">
+		<receiver android:name="com.baidu.android.pushservice.RegistrationReceiver" android:process=":bdservice_v1">
 			<intent-filter>
 				<action android:name="com.baidu.android.pushservice.action.METHOD" />
 				<action android:name="com.baidu.android.pushservice.action.BIND_SYNC" />
 			</intent-filter>
 			<intent-filter>
-				<action android:name="android.intent.action.PACKAGE_REMOVED"/>
+				<action android:name="android.intent.action.PACKAGE_REMOVED" />
 				<data android:scheme="package" />
 			</intent-filter>                   
 		</receiver>
 		<!-- Baidu Push  服务  -->
-		<service android:name="com.baidu.android.pushservice.PushService"
-		android:exported="true" android:process=":bdservice_v1"/>
+		<service android:name="com.baidu.android.pushservice.PushService" android:exported="true" android:process=":bdservice_v1" />
 		
 		<!-- Baidu push service rich media display -->
-        <activity            
-        android:name="com.baidu.android.pushservice.richmedia.MediaViewActivity"
-        android:configChanges="orientation|keyboardHidden"
-        android:label="MediaViewActivity" >
+        <activity android:name="com.baidu.android.pushservice.richmedia.MediaViewActivity" android:configChanges="orientation|keyboardHidden" android:label="MediaViewActivity">
         </activity>
-        <activity 
-        android:name="com.baidu.android.pushservice.richmedia.MediaListActivity"
-        android:configChanges="orientation|keyboardHidden"
-        android:label="MediaListActivity"
-        android:launchMode="singleTask" >
+        <activity android:name="com.baidu.android.pushservice.richmedia.MediaListActivity" android:configChanges="orientation|keyboardHidden" android:label="MediaListActivity" android:launchMode="singleTask">
         </activity> 
 
 
         <!-- Umeng APPKEY and Channel Start -->
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="527d57e956240b81f0018eef" >
+        <meta-data android:name="UMENG_APPKEY" android:value="527d57e956240b81f0018eef">
         </meta-data>
-        <meta-data
-            android:name="UMENG_CHANNEL"
-            android:value="Channel ID" />
+        <meta-data android:name="UMENG_CHANNEL" android:value="Channel ID" />
         <!-- Umeng APPKEY and Channel End -->
         
         <!-- Baidu Push -->
-        <meta-data
-            android:name="api_key"
-            android:value="ekONpN2M5jT1aZXt3V3vTysl" />
+        <meta-data android:name="api_key" android:value="ekONpN2M5jT1aZXt3V3vTysl" />
     </application>
     
 </manifest>
