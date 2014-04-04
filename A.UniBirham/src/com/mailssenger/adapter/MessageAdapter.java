@@ -171,12 +171,11 @@ public class MessageAdapter extends BaseAdapter {
 				@Override
 				public void onClick(View v) {
 					
-					String hisUserModelString = mGson.toJson(hisUserModel);
-					T.dShowLong(mContext, hisUserModelString);
-					//将用户对象传给 ChatActivity.class
+					//将用户对象传给 UserInfoActivity.class
 					Intent intent = new Intent(mContext,UserInfoActivity.class);
-					intent.putExtra("user", hisUserModelString);
+					intent.putExtra("hisEmail", hisUserModel.getEmail());
 					mContext.startActivity(intent);
+
 
 				}
 			});
@@ -224,11 +223,9 @@ public class MessageAdapter extends BaseAdapter {
 					@Override
 					public void onClick(View v) {
 						
-						String hisUserModelString = mGson.toJson(hisUserModel);
-						T.dShowLong(mContext, hisUserModelString);
-						//将用户对象传给 ChatActivity.class
+						//将用户对象传给 UserInfoActivity.class
 						Intent intent = new Intent(mContext,UserInfoActivity.class);
-						intent.putExtra("user", hisUserModelString);
+						intent.putExtra("hisEmail", hisUserModel.getEmail());
 						mContext.startActivity(intent);
 
 					}

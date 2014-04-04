@@ -12,6 +12,7 @@ import com.mailssenger.R;
 import com.mailssenger.db.MessageDB;
 import com.mailssenger.db.RecentDB;
 import com.mailssenger.db.UserDB;
+import com.mailssenger.model.MailModel;
 import com.mailssenger.model.UserModel;
 import com.mailssenger.util.KenBurnsView;
 import com.mailssenger.util.SharedPreferencesUtil;
@@ -23,11 +24,13 @@ public class UserInfoActivity extends BaseActivity {
     private KenBurnsView mHeaderPicture;
     private ImageView mHeaderLogo;
     private View mHeader;
-    
+
     private TextView mHeaderInfo; 
     
-    
+    //
+    String hisEmail;
     UserModel hisUserModel ;
+    
 	//初始化工具
 	private CommonApplication mApplication;
 	private SharedPreferencesUtil mSpUtil;
@@ -41,14 +44,20 @@ public class UserInfoActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-      //初始化各工具
+        //初始化各工具
   		mApplication = CommonApplication.getInstance();
   		mSpUtil = mApplication.getSpUtil();
   		mGson = mApplication.getGson();
   		mUserDB = mApplication.getUserDB();
   		mMsgDB = mApplication.getMessageDB();
   		mRecentDB = mApplication.getRecentDB();
-
+  		
+		//bundle, get data from caller
+		Bundle bundle = getIntent().getExtras();
+		if (bundle != null) {
+			hisEmail = bundle.getString("hisEmail");
+			hisUserModel = mUserDB.getUser(hisEmail);
+		}
 
         setContentView(R.layout.user_info);
 
@@ -57,14 +66,10 @@ public class UserInfoActivity extends BaseActivity {
         mHeaderPicture.setResourceIds(R.drawable.picture0, R.drawable.picture1);
         mHeaderLogo = (ImageView) findViewById(R.id.header_logo);
         
-        Bundle bundle = getIntent().getExtras();
-		if (bundle != null) {
-			hisUserModel = mGson.fromJson(bundle.getString("user"),UserModel.class);
-		}
-        
 		mHeaderInfo = (TextView)findViewById(R.id.header_info);
 		mHeaderInfo.setText(hisUserModel.getEmail());
-		
+		mHeaderLogo.setImageResource(CommonApplication.heads[hisEmail.charAt(1)%18]);//头像设置
+//		mHeaderLogo.setImageDrawable(drawable)
 
     }
 

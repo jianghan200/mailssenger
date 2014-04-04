@@ -55,7 +55,7 @@ import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UpdateStatus;
 
 public class MainActivity extends BaseActivity implements OnClickListener,
-MyPushMessageReceiver.EventHandler, LogicObject, SearchView.OnQueryTextListener,PopupMenu.OnMenuItemClickListener{
+MyPushMessageReceiver.EventHandler, LogicObject,PopupMenu.OnMenuItemClickListener{
 	
 	//添加LogicObject之后才可以添加任务
 	private static String TAG = " >MainActivity";
@@ -567,22 +567,7 @@ MyPushMessageReceiver.EventHandler, LogicObject, SearchView.OnQueryTextListener,
 		mRecentAdapter.setData(mRecentDatas);
 		mRecentAdapter.notifyDataSetChanged();
     }
-    
-    
-    
-	//this for the search
-	@Override
-    public boolean onQueryTextSubmit(String s) {
-        Toast.makeText(this, s, Toast.LENGTH_LONG).show();
-        return true;
-    }
- 
-    @Override
-    public boolean onQueryTextChange(String s) {
-    	
-        return false;
-    }
-    
+
     private SearchView mSearchView;
 	 
 	@Override
@@ -595,13 +580,15 @@ MyPushMessageReceiver.EventHandler, LogicObject, SearchView.OnQueryTextListener,
 //        	 mSearchView.setOnQueryTextListener(this);
 ////        }
 	   
-//        search view	 
-        	SearchManager searchManager =  (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-             
-            MenuItem searchItem = menu.findItem(R.id.action_search);
-     	    mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-            mSearchView.setSearchableInfo( 
-             		searchManager.getSearchableInfo(getComponentName()));
+//        search view	
+	    
+	    
+//        	SearchManager searchManager =  (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//             
+//            MenuItem searchItem = menu.findItem(R.id.action_search);
+//     	    mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+//            mSearchView.setSearchableInfo( 
+//             		searchManager.getSearchableInfo(getComponentName()));
 	    
 	    
 

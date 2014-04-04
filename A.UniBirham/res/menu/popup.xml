@@ -1,4 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<!-- This is popup menu  -->
 <item
     android:id="@+id/new_group"
     android:title="New Group"
