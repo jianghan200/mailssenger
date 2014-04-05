@@ -22,7 +22,7 @@ public class UIHelper {
 	public final static int OK = 4;
 	public final static int IMAGE = 5;
 	public final static int REFRESH = 6;
-	public final static int  SYNC=7;
+	public final static int SYNC=7;
 	
 	public final static int UPLOAD = 7;
 	public final static int DOWNLOAD = 8;
@@ -34,27 +34,24 @@ public class UIHelper {
 //		context.startActivity(intent);
 //	}
 	
-	public static void showUniBirhamActivity(Context context) {
+	public static void showMainActivity(Context context, boolean finish) {
 		Intent intent = new Intent(context, MainActivity.class);
 		context.startActivity(intent);
+		if(finish){
+			((Activity) context).finish();
+		}
 	}
 	
-	public static void showSplashActivity(Context context) {
+	public static void showWelcomeActivity(Context context, boolean finish) {
 		Intent intent = new Intent(context, WelcomeActivity.class);
 		context.startActivity(intent);
-		
-	}
-	
-	public static void showBaseActivity(Context context) {
-		Intent intent = new Intent(context, BaseActivity.class);
-		context.startActivity(intent);
-		((Activity) context).finish();
+		if(finish){
+			((Activity) context).finish();
+		}
 	}
 	
 
 
-	
-	
 //	public static void 	toastNoNewMail(){
 //		Message msg = new Message();
 //		Bundle bundle = new Bundle();
@@ -71,8 +68,5 @@ public class UIHelper {
 //		msg.setData(bundle);// msg using bundle to pass value
 //		MainListActivity.handler.sendMessage(msg);
 //	}
-	
-	
-	
 
 }

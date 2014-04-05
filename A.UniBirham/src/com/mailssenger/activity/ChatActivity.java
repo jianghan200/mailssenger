@@ -51,11 +51,8 @@ public class ChatActivity extends BaseActivity implements
 	private static String TAG = " >ChatActivity";
 	public static final int NEW_MESSAGE = 0x001;// 收到消息
 
-	private CommonApplication mApplication;
 	private static int MsgPagerNum;
-	private MessageDB mMessageDB;
-	private RecentDB mRecentDB;
-	private UserDB mUserDB;
+
 
 	//
 	private Button sendBtn;
@@ -71,18 +68,14 @@ public class ChatActivity extends BaseActivity implements
 	private List<String> keys;
 	private MessageAdapter msgAdapter;
 	private MsgListView mMsgListView;
-	private SharedPreferencesUtil mSpUtil;
 	private UserModel hisUserModel;
-
-	private Gson mGson;
 	
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			if (msg.what == NEW_MESSAGE) {
 				
 			}
-			
-			
+
 			// String message = (String) msg.obj;
 			MessageModel chatMessage = (MessageModel) msg.obj;
 			//如果能跟用户聊天,那么数据库中一定有该用户
@@ -103,7 +96,7 @@ public class ChatActivity extends BaseActivity implements
 				//以上为错误思想,无法解决   当他接收我发送消息,他无法知道是谁发给他的
 				L.e(TAG,mGson.toJson(chatMessage));
 				L.e(TAG,"save msg");
-				mMessageDB.saveMsg(hisEmail, chatMessage);
+				mMsgDB.saveMsg(hisEmail, chatMessage);
 
 				ConversationModel recentItem = new ConversationModel();
 				recentItem.setEmail(hisEmail);
@@ -127,24 +120,12 @@ public class ChatActivity extends BaseActivity implements
 		
 		setContentView(R.layout.chat_main);
 
-
 		hisUserModel = (UserModel) getIntent().getSerializableExtra("user");
-		
-//		UserModel hisUserModel2 =(UserModel) getIntent().getExtras();
-		L.e("here hisUserModel");
-		L.e(hisUserModel.toString());
 		if (hisUserModel == null) {// 如果为空，直接关闭
 			finish();
 		}
 		
 		setTitle(hisUserModel.getNickName());
-		
-		mApplication = CommonApplication.getInstance();
-		mSpUtil = mApplication.getSpUtil();
-		mGson = mApplication.getGson();
-		mMessageDB = mApplication.getMessageDB();
-		mRecentDB = mApplication.getRecentDB();
-
 
 		MsgPagerNum = 0;
 		msgAdapter = new MessageAdapter(this, initMsgData(),hisUserModel);
@@ -197,7 +178,7 @@ public class ChatActivity extends BaseActivity implements
 	 * 加载消息历史，从数据库中读出
 	 */
 	private List<MessageModel> initMsgData() {
-		List<MessageModel> list = mMessageDB.getMsg(hisUserModel.getEmail(),
+		List<MessageModel> list = mMsgDB.getMsg(hisUserModel.getEmail(),
 				MsgPagerNum);
 		List<MessageModel> msgList = new ArrayList<MessageModel>();// 消息对象数组
 		if (list.size() > 0) {
@@ -358,7 +339,7 @@ public class ChatActivity extends BaseActivity implements
 				mMsgListView.setSelection(msgAdapter.getCount() - 1);
 				
 				//存信息,为自己发的信息,email 设为对方的地址,isCome 为false
-				mMessageDB.saveMsg(hisUserModel.getEmail(), msgItem);
+				mMsgDB.saveMsg(hisUserModel.getEmail(), msgItem);
 				msgEt.setText("");
 				
 				L.e(mGson.toJson(msgItem));
@@ -490,7 +471,7 @@ public class ChatActivity extends BaseActivity implements
 //				//以上为错误思想,无法解决   当他接收我发送消息,他无法知道是谁发给他的
 //				L.e(TAG,mGson.toJson(chatMessage));
 //				L.e(TAG,"save msg");
-//				mMessageDB.saveMsg(hisEmail, chatMessage);
+//				mMsgDB.saveMsg(hisEmail, chatMessage);
 //
 //				RecentConversationModel recentItem = new RecentConversationModel();
 //				recentItem.setEmail(hisEmail);

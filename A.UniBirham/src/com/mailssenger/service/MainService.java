@@ -21,7 +21,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.mailssenger.CommonApplication;
-import com.mailssenger.LogicObject;
+import com.mailssenger.MainServiceCallback;
 import com.mailssenger.Task;
 
 public class MainService extends Service implements Runnable {
@@ -168,7 +168,7 @@ public class MainService extends Service implements Runnable {
 			try {
 				
 				Context mContext=(Context)((Map)msg.obj).get("activityContext");
-				LogicObject ia = (LogicObject)mContext;
+				MainServiceCallback ia = (MainServiceCallback)mContext;
 				
 				Object postObject = ((Map)msg.obj).get("postObject");
 				

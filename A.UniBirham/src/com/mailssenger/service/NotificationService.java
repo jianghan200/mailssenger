@@ -9,7 +9,7 @@ import com.mailssenger.R;
 import java.util.Set;
 
 import com.mailssenger.CommonApplication;
-import com.mailssenger.LogicObject;
+import com.mailssenger.MainServiceCallback;
 import com.mailssenger.Task;
 import com.mailssenger.activity.MainActivity;
 import com.mailssenger.mail.MailAccount;
@@ -24,7 +24,7 @@ import android.content.Intent;
 import android.os.IBinder;
 
 //Notification Service
-public class NotificationService extends Service implements LogicObject {
+public class NotificationService extends Service implements MainServiceCallback {
 	private NotificationService context = this;
 	private static Integer notificationCount = 0;
 

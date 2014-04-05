@@ -35,7 +35,7 @@ import com.mailssenger.R;
  * @author Han
  * 
  */
-public class MailContentActivity extends BaseActivity implements LogicObject {
+public class MailContentActivity extends BaseActivity implements MainServiceCallback {
 
 	private MailContentActivity context = null;
 	

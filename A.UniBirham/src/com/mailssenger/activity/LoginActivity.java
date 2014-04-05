@@ -1,31 +1,11 @@
 package com.mailssenger.activity;
 
-
-
-import com.mailssenger.CommonApplication;
-import com.mailssenger.LogicObject;
-import com.mailssenger.Task;
-import com.mailssenger.db.UserDB;
-import com.mailssenger.mail.MailAccount;
-import com.mailssenger.model.MessageModel;
-import com.mailssenger.model.UserModel;
-import com.mailssenger.push.MyPushMessageReceiver;
-import com.mailssenger.service.MainService;
-import com.mailssenger.util.DialogUtil;
-import com.mailssenger.util.L;
-import com.mailssenger.util.NetUtil;
-import com.mailssenger.util.SharedPreferencesUtil;
-import com.mailssenger.util.T;
-import com.mailssenger.util.UIHelper;
-import com.mailssenger.R;
-import android.R.layout;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.text.Editable;
-import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
@@ -43,32 +23,43 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-public class LoginActivity extends BaseActivity implements LogicObject, MyPushMessageReceiver.EventHandler{
+import com.mailssenger.CommonApplication;
+import com.mailssenger.MainServiceCallback;
+import com.mailssenger.R;
+import com.mailssenger.Task;
+import com.mailssenger.mail.MailAccount;
+import com.mailssenger.model.MessageModel;
+import com.mailssenger.model.UserModel;
+import com.mailssenger.push.MyPushMessageReceiver;
+import com.mailssenger.service.MainService;
+import com.mailssenger.util.DialogUtil;
+import com.mailssenger.util.L;
+import com.mailssenger.util.NetUtil;
+import com.mailssenger.util.T;
+import com.mailssenger.util.UIHelper;
+
+public class LoginActivity extends BaseActivity implements MainServiceCallback, MyPushMessageReceiver.EventHandler{
 
      private EditText etAccount;
      private EditText etPW;
      private EditText etHost;
      private Button btnLogin;
      private Button btnsignin;
-     LoginActivity context = null;
      private ImageView jmuImageView;
      private ImageButton btnclsAccount;
      private ImageButton btnclsPW;
      private LinearLayout lyAccount;
      private LinearLayout lyPW;
      private LinearLayout lyHelp;
-     Dialog dialog;
+     private Dialog dialog;
      
      boolean hasRetry = false;
      boolean isHelpShow = false;
 	  //对话框,链接服务器
 	 private Dialog mConnectServerDialog;
-	 private SharedPreferencesUtil mSpUtil;
-	 private UserDB mUserDB;
-	 
+
 	//网络提醒
 	 private View mNetErrorView;
 	 
@@ -87,9 +78,6 @@ public class LoginActivity extends BaseActivity implements LogicObject, MyPushMe
            etPW = (EditText) findViewById(R.id. et_log_psw);
            btnLogin = (Button) findViewById(R.id.btn_Log_in );
            etAccount.setText(CommonApplication.ACCOUNT);
-          
-           mSpUtil = CommonApplication.getInstance().getSpUtil();
-           mUserDB = CommonApplication.getInstance().getUserDB();
            
            btnclsAccount=(ImageButton) findViewById(R.id.btn_clear );
            btnclsPW=(ImageButton) findViewById(R.id.btn_clear2 );
@@ -108,7 +96,6 @@ public class LoginActivity extends BaseActivity implements LogicObject, MyPushMe
            super.onCreate(savedInstanceState);
 
           setContentView(R.layout.log_in);
-          context = this;
           //set up the  view
           InitConfig();
           
@@ -177,8 +164,8 @@ public class LoginActivity extends BaseActivity implements LogicObject, MyPushMe
 		                       mSpUtil.setNick(username);
 		                          
 	                          Toast. makeText(context, "Add Mail Account Succeed!", Toast.LENGTH_LONG).show();
-	                          UIHelper.showUniBirhamActivity(context);
-	                          context.finish();
+	                          UIHelper.showMainActivity(context,true);
+	    
                	   			}
                       
 //                      if(!username.contains("bham.ac.uk")||!username.contains("@")){
@@ -416,8 +403,8 @@ public class LoginActivity extends BaseActivity implements LogicObject, MyPushMe
 				   			mConnectServerDialog.dismiss();
 				   		
 					   	Toast. makeText(context, "Add Mail Account Succeed!", Toast.LENGTH_LONG).show();
-						UIHelper.showUniBirhamActivity(context);
-						context.finish();
+					    UIHelper.showMainActivity(context,true);
+					    
                     }else{
                     	
                     	T.showLong(context, "First time failed, will retry 2 seconds later.");

@@ -3,15 +3,10 @@ package com.mailssenger.activity;
 
 import java.util.LinkedList;
 
-import android.app.Activity;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.SearchView;
 import android.util.DisplayMetrics;
@@ -25,13 +20,11 @@ import android.widget.Toast;
 
 import com.baidu.android.pushservice.PushConstants;
 import com.baidu.android.pushservice.PushManager;
-import com.google.gson.Gson;
 import com.mailssenger.CommonApplication;
-import com.mailssenger.LogicObject;
+import com.mailssenger.MainServiceCallback;
 import com.mailssenger.R;
 import com.mailssenger.Task;
 import com.mailssenger.adapter.RecentAdapter;
-import com.mailssenger.db.MessageDB;
 import com.mailssenger.db.RecentDB;
 import com.mailssenger.db.UserDB;
 import com.mailssenger.fragment.ConvFragment;
@@ -47,19 +40,15 @@ import com.mailssenger.service.MainService;
 import com.mailssenger.slidinglayer.SlidingLayer;
 import com.mailssenger.util.L;
 import com.mailssenger.util.NetUtil;
-import com.mailssenger.util.SharedPreferencesUtil;
 import com.mailssenger.util.T;
 import com.slidingmenu.lib.SlidingMenu;
-import com.umeng.update.UmengDialogButtonListener;
-import com.umeng.update.UmengUpdateAgent;
-import com.umeng.update.UpdateStatus;
 
 public class MainActivity extends BaseActivity implements OnClickListener,
-MyPushMessageReceiver.EventHandler, LogicObject,PopupMenu.OnMenuItemClickListener{
+MyPushMessageReceiver.EventHandler, MainServiceCallback,PopupMenu.OnMenuItemClickListener{
 	
 	//添加LogicObject之后才可以添加任务
 	private static String TAG = " >MainActivity";
-	private MainActivity context;//hello
+	
 	
 	ConvFragment convFragment = null;
 //	GroupsFragment groupsFragment;
@@ -72,15 +61,6 @@ MyPushMessageReceiver.EventHandler, LogicObject,PopupMenu.OnMenuItemClickListene
 	public static SlidingMenu slidingMenu;
 	
 	int mScreenWidth;
-	
-	//初始化工具
-	private CommonApplication mApplication;
-	private SharedPreferencesUtil mSpUtil;
-	private UserDB mUserDB;
-	private RecentDB mRecentDB;
-	private MessageDB mMsgDB;
-	private MediaPlayer mMediaPlayer;
-	private Gson mGson;
 		
 	//网络提醒
 	private View mNetErrorView;
@@ -100,17 +80,8 @@ MyPushMessageReceiver.EventHandler, LogicObject,PopupMenu.OnMenuItemClickListene
 		
 		setTitle("Mailssenger");
 		
-
-		//初始化各工具
-		mApplication = CommonApplication.getInstance();
-		mSpUtil = mApplication.getSpUtil();
-		mGson = mApplication.getGson();
-		mUserDB = mApplication.getUserDB();
-		mMsgDB = mApplication.getMessageDB();
-		mRecentDB = mApplication.getRecentDB();
 		mApplication.setHandler(handler);
 		mRecentDatas = new LinkedList<ConversationModel>();
-		
 		mRecentDatas = mRecentDB.getRecentList();
 		mRecentAdapter = new RecentAdapter(this);
 		mRecentAdapter.setData(mRecentDatas);
@@ -118,24 +89,6 @@ MyPushMessageReceiver.EventHandler, LogicObject,PopupMenu.OnMenuItemClickListene
 		//start baidu push
 		PushManager.startWork(getApplicationContext(),
 		PushConstants.LOGIN_TYPE_API_KEY, CommonApplication.API_KEY);
-		
-		//友盟强制升级
-		UmengUpdateAgent.update(this);
-		UmengUpdateAgent.setUpdateOnlyWifi(false);
-		UmengUpdateAgent.setDialogListener(new UmengDialogButtonListener() {
-			
-		    @Override
-		    public void onClick(int status) {
-		        switch (status) {
-		        case UpdateStatus.Update:
-		            break;
-		        default:
-		            //close the app
-		        	context.finish();
-		        }
-		    }
-		});
-
 
 		//初始化网络提示
 		mNetErrorView = findViewById(R.id.net_status_bar_top);
@@ -174,6 +127,7 @@ MyPushMessageReceiver.EventHandler, LogicObject,PopupMenu.OnMenuItemClickListene
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		
 		MyPushMessageReceiver.ehList.add(this);
 		
 		L.e(TAG,"I am paused");
