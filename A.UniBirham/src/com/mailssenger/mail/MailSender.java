@@ -22,7 +22,6 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import com.mailssenger.CommonApplication;
-import com.mailssenger.util.JSSEProvider;
 
 
 

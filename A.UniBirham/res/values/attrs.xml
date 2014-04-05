@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-        <!-- SlidingLayer -->
+    <!-- SlidingLayer -->
     <declare-styleable name="SlidingLayer">
         <attr name="shadow_drawable" format="boolean" />
         <attr name="shadow_width" format="dimension" />

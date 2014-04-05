@@ -43,7 +43,7 @@ public class BaseActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		context = this;
 		
-		//put the activity intto activity manager
+		//put the activity into activity manager
 		CommonApplication.activityManager.putActivity(this);
 		
 		//Set the home button as clickable

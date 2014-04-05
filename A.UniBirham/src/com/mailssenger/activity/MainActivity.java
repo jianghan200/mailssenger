@@ -46,27 +46,21 @@ import com.slidingmenu.lib.SlidingMenu;
 public class MainActivity extends BaseActivity implements OnClickListener,
 MyPushMessageReceiver.EventHandler, MainServiceCallback,PopupMenu.OnMenuItemClickListener{
 	
-	//添加LogicObject之后才可以添加任务
+	//添加 MainServiceCallback 之后才可以添加任务
 	private static String TAG = " >MainActivity";
-	
-	
+
 	ConvFragment convFragment = null;
-//	GroupsFragment groupsFragment;
-//	ContactsFragment contactsFragment;
 	
-	LinkedList<ConversationModel> mRecentDatas;
-	public RecentAdapter mRecentAdapter;
+	private LinkedList<ConversationModel> mRecentDatas;
+	private RecentAdapter mRecentAdapter;
 	
 	//sliding menu
-	public static SlidingMenu slidingMenu;
+	private static SlidingMenu slidingMenu;
 	
-	int mScreenWidth;
+	private int mScreenWidth;
 		
 	//网络提醒
 	private View mNetErrorView;
-
-	//邮件功能
-	private static String folder = "inbox";
 	
 	//
 	RightFragment mFragRight; 

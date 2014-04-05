@@ -1,4 +1,4 @@
-package com.mailssenger.util;
+package com.mailssenger.mail;
 
 /*
  *  Licensed to the Apache Software Foundation (ASF) under one or more
