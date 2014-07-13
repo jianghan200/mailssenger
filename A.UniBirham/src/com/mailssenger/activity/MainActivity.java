@@ -589,6 +589,7 @@ MyPushMessageReceiver.EventHandler, MainServiceCallback,PopupMenu.OnMenuItemClic
         MenuInflater inflate = popup.getMenuInflater();
         inflate.inflate(R.menu.popup, popup.getMenu());
         popup.show();
+        
 
     }
 
@@ -601,8 +602,7 @@ MyPushMessageReceiver.EventHandler, MainServiceCallback,PopupMenu.OnMenuItemClic
 				break;
 			case R.id.new_group:
 				Toast.makeText(context, "not implemented yet",  Toast.LENGTH_SHORT).show();
-				break;
-				
+				break;	
 			case R.id.new_mail:
 				Intent intent = new Intent(context, SendMailActivity.class);
 	    		context.startActivity(intent);

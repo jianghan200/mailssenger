@@ -3,17 +3,14 @@
  */
 package com.mailssenger.util;
 
-import com.mailssenger.activity.BaseActivity;
-import com.mailssenger.activity.MainActivity;
-import com.mailssenger.activity.WelcomeActivity;
-
-import com.mailssenger.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageButton;
+
+import com.mailssenger.activity.LoginActivity;
+import com.mailssenger.activity.MainActivity;
+import com.mailssenger.activity.SendMailActivity;
+import com.mailssenger.activity.WelcomeActivity;
 
 public class UIHelper {
 	public final static int BACK = 1;
@@ -49,6 +46,23 @@ public class UIHelper {
 			((Activity) context).finish();
 		}
 	}
+	
+	public static void showLoginActivity(Context context, boolean finish) {
+		Intent intent = new Intent(context, LoginActivity.class);
+		context.startActivity(intent);
+		if(finish){
+			((Activity) context).finish();
+		}
+	}
+	
+	public static void showSendMailActivity(Context context, boolean finish) {
+		Intent intent = new Intent(context, SendMailActivity.class);
+		context.startActivity(intent);
+		if(finish){
+			((Activity) context).finish();
+		}
+	}
+	
 	
 
 

@@ -24,7 +24,7 @@ public class WelcomeActivity extends Activity {
 	private SharedPreferencesUtil mSpUtil;
 	
 	boolean is_login = false;
-	boolean is_debug = true;
+	boolean is_debug = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class WelcomeActivity extends Activity {
 
 				public void run() {
 					
-					if (is_login) {
+					if (!is_login) {
 						//redirect to   MainListActivity is login is true
 						overridePendingTransition(R.anim.enter_alpha,
 								R.anim.exit_alpha);
@@ -77,8 +77,8 @@ public class WelcomeActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
 		menu.add(0, 0, 0, "主页面");
-		menu.add(0, 1, 0, "1");
-		menu.add(0, 2, 0, "1");
+		menu.add(0, 1, 0, "登录页面");
+		menu.add(0, 2, 0, "发邮件");
 
 		menu.add(0, 3, 0, "1");
 		menu.add(0, 4, 0, "1");
@@ -95,10 +95,10 @@ public class WelcomeActivity extends Activity {
 				UIHelper.showMainActivity(context, true);		
 				break;
 			case 1:
-	//			UIHelper.showLibraryActivity(context);
+				UIHelper.showLoginActivity(context, true);	
 				break;
 			case 2:
-				
+				UIHelper.showSendMailActivity(context, true);	
 				break;
 		}
 		return super.onOptionsItemSelected(item);

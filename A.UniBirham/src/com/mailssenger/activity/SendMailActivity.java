@@ -6,7 +6,6 @@ import java.util.Set;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 import com.mailssenger.CommonApplication;
 import com.mailssenger.Task;
-import com.mailssenger.mail.MailAccount;
 import com.mailssenger.mail.MailSender;
 import com.mailssenger.service.MainService;
 import com.mailssenger.util.TaskHelper;
@@ -27,7 +26,6 @@ import android.widget.Toast;
 /**
  * http://www.javacodegeeks.com/2013/10/send-email-with-attachment-in-android.
  * html
- * 
  */
 public class SendMailActivity extends BaseActivity implements OnClickListener {
 	private SendMailActivity context = null;
@@ -39,6 +37,7 @@ public class SendMailActivity extends BaseActivity implements OnClickListener {
 	String username, password ,sendAddr;
 	String attachment = "";
 	Uri URI = null;
+	
 	private static final int PICK_FROM_GALLERY = 101;
 	int columnIndex;
 
@@ -59,9 +58,9 @@ public class SendMailActivity extends BaseActivity implements OnClickListener {
 		btnSend.setOnClickListener(this);
 		btnAttachment.setOnClickListener(this);
 	}
-/*
- * show the attchment chooser
- */
+	/**
+	 * show the attchment chooser
+	 */
 	private void showChooser() {
 		// Use the GET_CONTENT intent from the utility class
 		Intent target = FileUtils.createGetContentIntent();
@@ -115,7 +114,6 @@ public class SendMailActivity extends BaseActivity implements OnClickListener {
 
 		if (v == btnAttachment) {
 			showChooser();
-
 		}
 		if (v == btnSend) {
 			try {

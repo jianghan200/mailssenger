@@ -131,9 +131,12 @@ public class MailAccount {
 		return imapStore;
 	}
 
-	/*
-	 * open IMAP folder
-	 */
+	/**
+	 * Get IMAP Folder
+	 * @param folderName
+	 * @param readOnly
+	 * @return
+	 */ 
 	private IMAPFolder openIMAPFolder(String folderName, boolean readOnly) {
 		Store store = getIMAPStore();
 		IMAPFolder imapFolder = null;
@@ -392,9 +395,9 @@ public class MailAccount {
 		return null;
 
 	}
-/*
- * send new mail
- */
+	/**
+	 * send new mail
+	 */
 	public void sendMail(Bundle bundle) {
 
 		

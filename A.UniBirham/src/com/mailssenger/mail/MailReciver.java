@@ -38,15 +38,15 @@ public class MailReciver {
         this.mimeMessage = mimeMessage;  
     }  
   
-    /*
-     * set mimemessage
+    /**
+     * Set mime message
      */
     public void setMimeMessage(MimeMessage mimeMessage) {  
         this.mimeMessage = mimeMessage;  
     }  
   
     /**  
-     *get sender's name and address 
+     * Get sender's name and address 
      */  
     public String getFrom() throws Exception {  
         InternetAddress address[] = (InternetAddress[]) mimeMessage.getFrom();  
@@ -61,7 +61,7 @@ public class MailReciver {
     }  
   
     /** 
-     * get the reciver, cc and bcc address and name
+     * Get the reciver, cc and bcc address and name
      * by pass %to  %cc %bcc 
      */  
     @SuppressLint("DefaultLocale")  
@@ -111,7 +111,7 @@ public class MailReciver {
         return mailaddr;  
     }  
   
-    /* 
+    /**
      * Get subject of the mail
      */  
     public String getSubject() throws MessagingException {  

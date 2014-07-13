@@ -219,13 +219,11 @@ public class LoginActivity extends BaseActivity implements MainServiceCallback, 
                            CommonApplication. PASSWORD = password;
                            CommonApplication. IMAP_HOST="imap.163.com" ;
                            CommonApplication. SMTP_HOST="smtp.163.com" ;
-                           System. out.println("::LoginActivity::OnCreate::" );
-                           System. out.println("username is " + username);
-                           System. out.println("password is " + password);                   
+                           System.out.println("::LoginActivity::OnCreate::" );
+                           System.out.println("username is " + username);
+                           System.out.println("password is " + password);                   
                       }
-                      
-                       
-                       
+
    	               // for authentication,open successful mean login successful
    	               Task task = new Task(context );
    	               task.setMethod(MailAccount.class, "authentication" );

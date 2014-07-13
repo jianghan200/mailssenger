@@ -53,7 +53,6 @@ public class ChatActivity extends BaseActivity implements
 
 	private static int MsgPagerNum;
 
-
 	//
 	private Button sendBtn;
 	private ImageButton mailBtn;
