@@ -1,6 +1,7 @@
+*.class
 /library*/
 /android*/
-*.class
+
 .classpath
 .project
 /A.UniBirham/bin/
