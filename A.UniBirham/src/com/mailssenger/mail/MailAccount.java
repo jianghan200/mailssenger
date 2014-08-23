@@ -25,12 +25,12 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.mailssenger.CommonApplication;
 import com.mailssenger.activity.MainActivity;
-import com.mailssenger.db.MessageDB;
-import com.mailssenger.db.RecentDB;
+import com.mailssenger.db.MsgDB;
+import com.mailssenger.db.ConvDB;
 import com.mailssenger.db.UserDB;
-import com.mailssenger.model.ConversationModel;
+import com.mailssenger.model.ConvModel;
 import com.mailssenger.model.MailModel;
-import com.mailssenger.model.MessageModel;
+import com.mailssenger.model.MsgModel;
 import com.mailssenger.model.UserModel;
 import com.mailssenger.util.L;
 import com.mailssenger.util.SharedPreferencesUtil;
@@ -53,7 +53,7 @@ public class MailAccount {
 	private Store imap_store = null;
 	
 
-	Gson mGson =CommonApplication.getInstance().getGson();
+	Gson mGson = CommonApplication.getInstance().getGson();
 	MailAccount(String username, String password) {
 		this.username = username;
 		this.password = password;
@@ -620,8 +620,8 @@ public class MailAccount {
 	
 		SharedPreferencesUtil mSpUtil = CommonApplication.getInstance().getSpUtil();
 		UserDB mUserDb = CommonApplication.getInstance().getUserDB();
-		MessageDB mMsgDb =CommonApplication.getInstance().getMessageDB();
-		RecentDB mRecentDB = CommonApplication.getInstance().getRecentDB();
+		MsgDB mMsgDb =CommonApplication.getInstance().getMsgDB();
+		ConvDB mConvDB = CommonApplication.getInstance().getConvDB();
 		
 		
 		TAG  = "saveInChatDatabase"+TAG;
@@ -632,7 +632,7 @@ public class MailAccount {
 		String hisEmail = emailAddr.substring(emailAddr.indexOf("<")+1, emailAddr.lastIndexOf(">"));
 		String hisNickName = emailAddr.substring(0,emailAddr.indexOf("<"));
 		
-		UserModel hisUserModel  =  mUserDb.selectInfo(hisEmail);
+		UserModel hisUserModel  =  mUserDb.getById(hisEmail);
 		if(hisUserModel==null&&!hisEmail.equals(mSpUtil.getEmail())){
 			L.e(hisEmail);
 
@@ -642,31 +642,35 @@ public class MailAccount {
 			if(hisNickName.equals("")){
 				hisUserModel.setNickName(hisEmail);
 			}
-			mUserDb.addUser(hisUserModel);
+			mUserDb.save(hisUserModel);
 		}
 		
-		MessageModel chatMessage = new MessageModel();
-		chatMessage.setEmail(hisEmail);
-		chatMessage.setCome(true);
-		chatMessage.setMsgType(MessageModel.MESSAGE_TYPE_MAIL);
+		//接收到一封新邮件
+		MsgModel msgItem = new MsgModel();
+		msgItem.setSender(hisEmail);
+		msgItem.setReceiver(mSpUtil.getEmail());
+		msgItem.setMsgType(MsgModel.MESSAGE_TYPE_MAIL);
+//		msgItem.setMessage(msg);
+//		msgItem.setTime(System.currentTimeMillis());
+		
 		
 		if(mail.getFlags().indexOf("unread")>0){
-			chatMessage.setNew(false);					
+			msgItem.setNew(false);					
 		}else{
-			chatMessage.setNew(true);
+			msgItem.setNew(true);
 		}
 		
-		chatMessage.setTime(TimeUtil.parseMailDateToChatMessageTime(mail.getSendDate()));
+		msgItem.setTime(TimeUtil.parseMailDateToChatMessageTime(mail.getSendDate()));
 
-		chatMessage.setMessage(mGson.toJson(mail));
-		L.i(TAG,mGson.toJson(chatMessage));
+		msgItem.setMessage(mGson.toJson(mail));
+		L.i(TAG,mGson.toJson(msgItem));
 //		messageId = bundle.getString("messageId");
 //		uid = bundle.getInt("uid");
 //		
 //		List<MailModel> mailist = CommonApplication.dbOperation.getMailByMessageIDFromLocal(messageId);
-		mMsgDb.saveMsg(hisEmail, chatMessage);
+		mMsgDb.save(msgItem);
 		
-		ConversationModel recentItem = new ConversationModel(hisEmail, hisUserModel.getAvatar(), hisUserModel.getNickName(),
+		ConvModel recentItem = new ConvModel(hisEmail, hisUserModel.getAvatar(), hisUserModel.getNickName(),
 				mGson.toJson(mail), 0, System.currentTimeMillis());
 		
 		CommonApplication.getInstance().getHandler().sendEmptyMessage(MainActivity.UPDATE_CHATS);
@@ -674,7 +678,7 @@ public class MailAccount {
 		
 		L.i(TAG,recentItem.toString());
 
-		mRecentDB.saveRecent(recentItem);
+		mConvDB.saveOrUpdate(recentItem);
 		
 	}
 	

@@ -22,11 +22,11 @@ import com.baidu.android.pushservice.PushManager;
 import com.google.gson.Gson;
 import com.mailssenger.CommonApplication;
 import com.mailssenger.activity.MainActivity;
-import com.mailssenger.db.MessageDB;
-import com.mailssenger.db.RecentDB;
+import com.mailssenger.db.MsgDB;
+import com.mailssenger.db.ConvDB;
 import com.mailssenger.db.UserDB;
-import com.mailssenger.model.ConversationModel;
-import com.mailssenger.model.MessageModel;
+import com.mailssenger.model.ConvModel;
+import com.mailssenger.model.MsgModel;
 import com.mailssenger.model.UserModel;
 import com.mailssenger.util.L;
 import com.mailssenger.util.NetUtil;
@@ -43,8 +43,8 @@ public class MyPushMessageReceiver extends BroadcastReceiver {
 	SharedPreferencesUtil mSpUtil;
 	Gson mGson;
 	UserDB mUserDB;
-	MessageDB mMsgDB;
-	RecentDB mRecentDB;
+	MsgDB mMsgDB;
+	ConvDB mConvDB;
 	
 	public static final String TAG = MyPushMessageReceiver.class.getSimpleName();
 	
@@ -58,7 +58,7 @@ public class MyPushMessageReceiver extends BroadcastReceiver {
 
 	public static abstract interface EventHandler {
 		
-		public abstract void onChatMessage(MessageModel chatMessage);
+		public abstract void onChatMessage(MsgModel chatMessage);
 
 		public abstract void onBind(String method, int errorCode, String content);
 
@@ -68,24 +68,28 @@ public class MyPushMessageReceiver extends BroadcastReceiver {
 
 		public void onNewFriend(UserModel u);
 	}
+	
+	
 
 	// 接收信息 处理
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		L.i(TAG, "接收到信息");
 		
 //		获得基本的管理工具
 		mApplication = CommonApplication.getInstance();
 		mSpUtil = mApplication.getSpUtil();
 		mGson = mApplication.getGson();
 		mUserDB = mApplication.getUserDB();
-		mMsgDB = mApplication.getMessageDB();
-		mRecentDB = mApplication.getRecentDB();
+		mMsgDB = mApplication.getMsgDB();
+		mConvDB = mApplication.getConvDB();
 		
 		// L.d(TAG, ">>> Receive intent: \r\n" + intent);
-		L.i("listener num = " + ehList.size());
+		L.i(TAG, "listener num = " + ehList.size());
 		
 		//如果是消息
 		if (intent.getAction().equals(PushConstants.ACTION_MESSAGE)) {
+			/*收到消息*/
 			
 			//获取消息
 			String chatMessage = intent.getExtras().getString(
@@ -93,12 +97,12 @@ public class MyPushMessageReceiver extends BroadcastReceiver {
 			
 			//消息的用户自定义内容读取方式
 			//收到消息,自己解析读取
-			L.i("onChatMessage: " + chatMessage);
+			L.i(TAG,"收到的信息: " + chatMessage);
 			try {
 				
 				//将json 消息转换成类
-				MessageModel msgItem = CommonApplication.getInstance().getGson()
-						.fromJson(chatMessage, MessageModel.class);
+				MsgModel msgItem = CommonApplication.getInstance().getGson()
+						.fromJson(chatMessage, MsgModel.class);
 				
 				//对消息进行预处理
 				parseChatMessage(msgItem);// 预处理，过滤一些消息，比如说新人问候或自己发送的
@@ -109,7 +113,7 @@ public class MyPushMessageReceiver extends BroadcastReceiver {
 
 		
 		}else if (intent.getAction().equals(PushConstants.ACTION_RECEIVE)) {
-			// 处理绑定等方法的返回数据
+			/*处理绑定等方法的返回数据*/
 			// PushManager.startWork()的返回值通过PushConstants.METHOD_BIND得到
 			// 获取方法
 			final String method = intent
@@ -138,6 +142,8 @@ public class MyPushMessageReceiver extends BroadcastReceiver {
 				
 		} else if (intent.getAction().equals(
 				PushConstants.ACTION_RECEIVER_NOTIFICATION_CLICK)) {
+			/*收到的是通知*/
+			
 			
 			// 可选。通知用户点击事件处理
 			L.d(TAG, "intent=" + intent.toUri(0));
@@ -155,7 +161,10 @@ public class MyPushMessageReceiver extends BroadcastReceiver {
 		
 		} else if (intent.getAction().equals(
 				"android.net.conn.CONNECTIVITY_CHANGE")) {
-			//如果是网络状态变化
+			/*如果是网络状态变化*/
+			
+			
+			
 			boolean isNetConnected = NetUtil.isNetConnected(context);
 			for (int i = 0; i < ehList.size(); i++)
 				((EventHandler) ehList.get(i)).onNetChange(isNetConnected);
@@ -163,14 +172,14 @@ public class MyPushMessageReceiver extends BroadcastReceiver {
 	}
 
 	//自定义消息预处理
-	private void parseChatMessage(MessageModel msg) {
+	private void parseChatMessage(MsgModel msg) {
 		
 	
 		// ChatMessage msg = gson.fromJson(chatMessage, ChatMessage.class);
-		L.i("gson ====" + msg.toString());
+		L.i(TAG,"我即将处理的信息：gson：" + msg.toString());
 				
 		String myEmail = mSpUtil.getEmail();
-		String fromEmail = msg.getEmail();//来自谁的信息
+		String fromEmail = msg.getSender();//来自谁的信息
 		
 		int msgType = msg.getMsgType();//消息类型
 		String hisMessage = msg.getMessage();
@@ -188,24 +197,24 @@ public class MyPushMessageReceiver extends BroadcastReceiver {
 				//没有监听的时候,通知栏提醒，保存数据库
 				showNotify(msg);
 				
-				UserModel u = mUserDB.selectInfo(fromEmail);
+				UserModel u = mUserDB.getById(fromEmail);
 				//保存在与他的对话表中
-				CommonApplication.getInstance().getMessageDB()
-						.saveMsg(u.getEmail(),msg);
+				CommonApplication.getInstance().getMsgDB()
+						.save(msg);
 				
 				//保存到最近会话
-				ConversationModel recentItem = new ConversationModel(u.getEmail(), u.getAvatar(),
+				ConvModel recentItem = new ConvModel(u.getEmail(), u.getAvatar(),
 						u.getNickName(), msg.getMessage(), 0,
 						System.currentTimeMillis());
-				CommonApplication.getInstance().getRecentDB()
-						.saveRecent(recentItem);
+				CommonApplication.getInstance().getConvDB()
+						.saveOrUpdate(recentItem);
 			}
 		}
-		if(msgType==MessageModel.MESSAGE_TYPE_FRIEND_REQUEST){
+		if(msgType==MsgModel.MESSAGE_TYPE_FRIEND_REQUEST){
 			
 		}
 		
-		if(msgType==MessageModel.MESSAGE_TYPE_NEW_USER){
+		if(msgType==MsgModel.MESSAGE_TYPE_NEW_USER){
 			//如果收到的是新用户的消息,此用户必为PUSH服务用户
 			
 			//新用户如果是自己就不用管了
@@ -215,12 +224,22 @@ public class MyPushMessageReceiver extends BroadcastReceiver {
 			//存下ta的user model 
 			UserModel hisUserModel = mGson.fromJson(hisMessage, UserModel.class);
 			String hisUserId = hisUserModel.getUserId();
-			mUserDB.addUser(hisUserModel);
+			mUserDB.save(hisUserModel);
 			
 			//将我的user model 发给他
-			UserModel myUserModel = mUserDB.selectInfo(myEmail);
-			MessageModel msgItem = new MessageModel(mSpUtil.getEmail(),
-					MessageModel.MESSAGE_TYPE_NEW_USER_RESPONSE, mGson.toJson(myUserModel) ,System.currentTimeMillis());
+			UserModel myUserModel = mUserDB.getById(myEmail);
+			
+			
+			//收到新用户的问候，回复一下
+			MsgModel msgItem = new MsgModel();
+			msgItem.setSender(mSpUtil.getEmail());
+			msgItem.setReceiver(hisUserModel.getEmail());
+			msgItem.setMsgType(MsgModel.MESSAGE_TYPE_NEW_USER_RESPONSE);
+			msgItem.setMessage(mGson.toJson(myUserModel));//将我的信息发回去
+			msgItem.setTime(System.currentTimeMillis());
+			
+			
+			
 			L.e("Here is myUserModel");
 			L.e(mGson.toJson(myUserModel));
 			//push 消息给他
@@ -230,7 +249,7 @@ public class MyPushMessageReceiver extends BroadcastReceiver {
 				handler.onNewFriend(hisUserModel);
 
 		}
-		if(msgType==MessageModel.MESSAGE_TYPE_NEW_USER_RESPONSE){
+		if(msgType==MsgModel.MESSAGE_TYPE_NEW_USER_RESPONSE){
 			
 			Log.e("Response","I am Model");
 			UserModel hisUserModel = mGson.fromJson(hisMessage, UserModel.class);
@@ -238,8 +257,8 @@ public class MyPushMessageReceiver extends BroadcastReceiver {
 			System.out.println(hisUserModel.getEmail());
 			System.out.println(hisUserModel.getUserId());
 			//如果这个用户还没有,就将它存在自己的数据库中
-			if(mUserDB.selectInfo(hisUserModel.getEmail())==null){
-				mUserDB.addUser(hisUserModel);
+			if(mUserDB.getById(hisUserModel.getEmail())==null){
+				mUserDB.save(hisUserModel);
 			}
 			
 			
@@ -248,7 +267,7 @@ public class MyPushMessageReceiver extends BroadcastReceiver {
 	}
 
 	@SuppressWarnings("deprecation")
-	private void showNotify(MessageModel chatMessage) {
+	private void showNotify(MsgModel chatMessage) {
 		//新消息数自增
 		mNewNum++;
 		
@@ -257,7 +276,7 @@ public class MyPushMessageReceiver extends BroadcastReceiver {
 
 		int icon = R.drawable.notify_newmessage;
 		
-		CharSequence tickerText = chatMessage.getEmail() + ":"
+		CharSequence tickerText = chatMessage.getSender() + ":"
 				+ chatMessage.getMessage();
 		long when = System.currentTimeMillis();
 		Notification notification = new Notification(icon, tickerText, when);
@@ -324,20 +343,36 @@ public class MyPushMessageReceiver extends BroadcastReceiver {
 				//并且把自己添加到数据库
 				//自己绑定成功
 				//把自己添加到数据库
-				mUserDB.addUser(myUserModel);
+				mUserDB.save(myUserModel);
 				
 				Gson mGson = CommonApplication.getInstance().getGson();
 				
-				MessageModel msgItem = new MessageModel(mSpUtil.getEmail(),
-						MessageModel.MESSAGE_TYPE_NEW_USER, mGson.toJson(myUserModel),System.currentTimeMillis());
+				
+				//在baidu注册成功，向所有用户发送一条新用户问候消息
+				MsgModel msgItem = new MsgModel();
+				msgItem.setSender(mSpUtil.getEmail());
+				msgItem.setReceiver("AllUser@meo.com");
+				msgItem.setMsgType(MsgModel.MESSAGE_TYPE_NEW_USER);
+				msgItem.setMessage(mGson.toJson(myUserModel));
+				msgItem.setTime(System.currentTimeMillis());
+				
+//				MessageModel msgItem = new MessageModel(mSpUtil.getEmail(),
+//						MessageModel.MESSAGE_TYPE_NEW_USER, mGson.toJson(myUserModel),System.currentTimeMillis());
 				
 				new SendMsgAsyncTask(mGson.toJson(msgItem), "").send();
 				
-				//创建一条问候自己的消息
-				MessageModel chatMessage = new MessageModel(mSpUtil.getEmail(),
-						MessageModel.MESSAGE_TYPE_TEXT, "Hello, I am you~",System.currentTimeMillis());
 				
-				mMsgDB.saveMsg(myUserModel.getEmail(), chatMessage);
+				//创建一条问候自己的消息
+				msgItem = new MsgModel();
+				msgItem.setSender(mSpUtil.getEmail());
+				msgItem.setReceiver(mSpUtil.getEmail());
+				msgItem.setMsgType(MsgModel.MESSAGE_TYPE_TEXT);
+				msgItem.setMessage("Hello, I am you~");
+				msgItem.setTime(System.currentTimeMillis());
+				
+
+				
+				mMsgDB.save(msgItem);
 				
 			}
 			

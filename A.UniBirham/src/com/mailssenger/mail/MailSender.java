@@ -23,8 +23,6 @@ import javax.mail.internet.MimeMultipart;
 
 import com.mailssenger.CommonApplication;
 
-
-
 import android.util.Log;
 
 public class MailSender extends javax.mail.Authenticator {
@@ -41,8 +39,8 @@ public class MailSender extends javax.mail.Authenticator {
 	 * for attachment
 	 */
 	public void addAttachment(String filename) throws Exception {
-		 System.out.println("::addAttachment::  filename is "+filename);
-		 filename=filename.replace("file://","");
+		System.out.println("::addAttachment::  filename is "+filename);
+		filename=filename.replace("file://","");
 		BodyPart messageBodyPart = new MimeBodyPart();
 		DataSource source = new FileDataSource(filename);
 		messageBodyPart.setDataHandler(new DataHandler(source));

@@ -30,7 +30,7 @@ import com.mailssenger.MainServiceCallback;
 import com.mailssenger.R;
 import com.mailssenger.Task;
 import com.mailssenger.mail.MailAccount;
-import com.mailssenger.model.MessageModel;
+import com.mailssenger.model.MsgModel;
 import com.mailssenger.model.UserModel;
 import com.mailssenger.push.MyPushMessageReceiver;
 import com.mailssenger.service.MainService;
@@ -405,26 +405,26 @@ public class LoginActivity extends BaseActivity implements MainServiceCallback, 
 					    
                     }else{
                     	
-                    	T.showLong(context, "First time failed, will retry 2 seconds later.");
+                    	T.showLong(context, "Email addrress or password is not correct, please try again.");
                     	
-                    	// for authentication,open successful mean login successful
-             
-                    	if(!hasRetry){
-                    		if(etAccount.getText().toString().contains("bham.ac.uk")){
-                        		String username =etAccount.getText().toString();
-                        		String mailServerAccount = username.substring(0,username.indexOf("@"));
-                        		CommonApplication. SACCOUNT =  mailServerAccount;
-                        		CommonApplication. ACCOUNT = etAccount.getText().toString();
-                        		CommonApplication. PASSWORD= etPW.getText().toString();
-                                CommonApplication. IMAP_HOST="mail.bham.ac.uk" ;
-                                CommonApplication. SMTP_HOST="auth-smtp.bham.ac.uk" ;
-                        	}
-                        	
-                    		mHandler.postDelayed(reSend, 2000);
-        	               hasRetry=true;
-                    	}else{
-                    		T.showLong(context, "Email addrress or password is not correct, please try again.");
-                    	}
+//                    	// for authentication,open successful mean login successful
+//             
+//                    	if(!hasRetry){
+//                    		if(etAccount.getText().toString().contains("bham.ac.uk")){
+//                        		String username =etAccount.getText().toString();
+//                        		String mailServerAccount = username.substring(0,username.indexOf("@"));
+//                        		CommonApplication. SACCOUNT =  mailServerAccount;
+//                        		CommonApplication. ACCOUNT = etAccount.getText().toString();
+//                        		CommonApplication. PASSWORD= etPW.getText().toString();
+//                              CommonApplication. IMAP_HOST="mail.bham.ac.uk" ;
+//                              CommonApplication. SMTP_HOST="auth-smtp.bham.ac.uk" ;
+//                        	}
+//                        	
+//                    		mHandler.postDelayed(reSend, 2000);
+//        	               hasRetry=true;
+//                    	}else{
+//                    		T.showLong(context, "Email addrress or password is not correct, please try again.");
+//                    	}
                     	
                     }
                    
@@ -441,22 +441,22 @@ public class LoginActivity extends BaseActivity implements MainServiceCallback, 
      }
      
      
-    Runnable reSend = new Runnable() {
-
- 		@Override
- 		public void run() {
- 			// TODO Auto-generated method stub
- 			L.i("resend msg...");
- 			 Task task = new Task(context );
- 	         task.setMethod(MailAccount.class, "authentication" );
- 	         MainService.newTask(task);
- 	         
- 	        //登录对话框
-       			mConnectServerDialog = DialogUtil.getLoginDialog(context,"Retrying to connect to the Birmingham mail server!");
-       			mConnectServerDialog.show();
-       			mConnectServerDialog.setCancelable(false);// 返回键不能取消
- 		}
- 	};
+//    Runnable reSend = new Runnable() {
+//
+// 		@Override
+// 		public void run() {
+// 			// TODO Auto-generated method stub
+// 			L.i("resend msg...");
+// 			 Task task = new Task(context );
+// 	         task.setMethod(MailAccount.class, "authentication" );
+// 	         MainService.newTask(task);
+// 	         
+// 	        //登录对话框
+//       			mConnectServerDialog = DialogUtil.getLoginDialog(context,"Retrying to connect to the Birmingham mail server!");
+//       			mConnectServerDialog.show();
+//       			mConnectServerDialog.setCancelable(false);// 返回键不能取消
+// 		}
+// 	};
 
 
      
@@ -481,7 +481,7 @@ public class LoginActivity extends BaseActivity implements MainServiceCallback, 
     	MyPushMessageReceiver.ehList.remove(this);
     }
 	@Override
-	public void onChatMessage(MessageModel chatMessage) {
+	public void onChatMessage(MsgModel chatMessage) {
 		// TODO Auto-generated method stub
 		
 	}

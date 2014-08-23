@@ -92,5 +92,19 @@
     <string name="action_help_info">help</string>
     <string name="login_help_info_detail">The login acount is your gmail or 163 mail,our service is based on them.
 If you have some question when you use this product ,please send e-mail to 	</string>
+
+   <!--  for navigation drawer -->
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
     
 </resources>

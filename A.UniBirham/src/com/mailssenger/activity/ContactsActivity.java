@@ -28,7 +28,7 @@ import com.mailssenger.contacts.SideBar;
 import com.mailssenger.contacts.SideBar.OnTouchingLetterChangedListener;
 import com.mailssenger.contacts.SortAdapter;
 import com.mailssenger.contacts.UserSortModel;
-import com.mailssenger.db.MessageDB;
+import com.mailssenger.db.MsgDB;
 import com.mailssenger.db.UserDB;
 import com.mailssenger.model.UserModel;
 import com.mailssenger.util.L;
@@ -42,7 +42,7 @@ public class ContactsActivity extends ActionBarActivity implements SearchView.On
 	CommonApplication mApplication;
 	private SharedPreferencesUtil mSpUtil;
 	private UserDB mUserDB;
-	private MessageDB mMsgDB;
+	private MsgDB mMsgDB;
 	private MediaPlayer mMediaPlayer;
 	private Gson mGson;
 	
@@ -66,7 +66,7 @@ public class ContactsActivity extends ActionBarActivity implements SearchView.On
 		mSpUtil = mApplication.getSpUtil();
 		mGson = mApplication.getGson();
 		mUserDB = mApplication.getUserDB();
-		mMsgDB = mApplication.getMessageDB();
+		mMsgDB = mApplication.getMsgDB();
 		
 		
 		setContentView(R.layout.fragment_contacts);
@@ -93,7 +93,7 @@ public class ContactsActivity extends ActionBarActivity implements SearchView.On
 							int position, long id) {
 						
 						String email = ((UserSortModel)adapter.getItem(position)).getEmail();
-						UserModel u = (UserModel) mUserDB.selectInfo(email);
+						UserModel u = (UserModel) mUserDB.getById(email);
 						L.d(u.toString());
 						mMsgDB.clearNewCount(u.getEmail());// 新消息置空
 						
@@ -139,9 +139,8 @@ public class ContactsActivity extends ActionBarActivity implements SearchView.On
 	private List<UserSortModel> filledData(){
 		
 		//get all the user
-		List<UserModel> mUserList= mUserDB.getUser();
+		List<UserModel> mUserList= mUserDB.getAll();
 	 
-		
 		List<UserSortModel> mSortList = new ArrayList<UserSortModel>();
 		if (mUserList.size()>0){
 			for(int i=0; i<mUserList.size(); i++){

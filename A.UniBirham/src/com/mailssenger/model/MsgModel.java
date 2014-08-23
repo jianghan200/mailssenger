@@ -1,14 +1,13 @@
 package com.mailssenger.model;
 
 
-import java.io.Serializable;
-
-import android.R.bool;
-
 import com.google.gson.annotations.Expose;
+import com.lidroid.xutils.db.annotation.Column;
 
-
-public class MessageModel {
+/**
+ * @date 20140823
+ */
+public class MsgModel extends EntityBase {
 	// Text
 	public static final int MESSAGE_TYPE_TEXT = 1;
 	// image
@@ -25,16 +24,27 @@ public class MessageModel {
 	public static final int MESSAGE_TYPE_NEW_USER = 12;
 	public static final int MESSAGE_TYPE_NEW_USER_RESPONSE = 13;
 	
+	//都不是主键，主键由系统自动生成
 	@Expose
-	private String email;// 消息来自  //邮箱地址
+	@Column(column = "receiver")
+	private String receiver;
+	
 	@Expose
+	@Column(column = "sender")
+	private String sender;
+	
+	@Expose
+	@Column(column = "msgType")
 	private int msgType;// 消息类型
 	@Expose
+	@Column(column = "message")
 	private String message;// 消息内容
 	@Expose
+	@Column(column = "time")
 	private long time;// 消息日期 //消息发送时间
 	
-	private boolean isCome;// 是否为收到的消息
+
+	@Column(column = "isNew")
 	private boolean isNew;	//是否为新消息
 	
 	//如果为邮件的话,message为邮件的ID
@@ -46,41 +56,34 @@ public class MessageModel {
 	//通过是否有userID来判断
 
 
-	public MessageModel() {
-		// TODO Auto-generated constructor stub
+	public MsgModel() {
+
+		this.isNew = false;//默认是已阅信息
 	}
 
-	public MessageModel(String email, int msgType, String message,
+	public MsgModel(String sender,String receiver, int msgType, String message,
 			 long date) {
 		super();
-		this.email = email;
+		this.sender= sender;
+		this.receiver = receiver;
 		this.msgType = msgType;
 		this.message = message;
 		this.time = date;
-		this.isCome = false;
-		this.isNew = false;
+		this.isNew = false;//默认是已阅信息
 	}
 	
-	public MessageModel(String email, int msgType, String message,
-			 long date,boolean isCome,boolean isNew) {
+	public MsgModel(String sender,String receiver, int msgType, String message,
+			 long date,boolean isNew) {
 		super();
-		this.email = email;
+		this.sender= sender;
+		this.receiver = receiver;
 		this.msgType = msgType;
 		this.message = message;
 		this.time = date;
-		this.isCome = isCome;
 		this.isNew = isNew;
 	}
 
 
-	
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
 
 	public int getMsgType() {
 		return msgType;
@@ -106,12 +109,20 @@ public class MessageModel {
 		this.time = time;
 	}
 
-	public boolean isCome() {
-		return isCome;
+	public String getReceiver() {
+		return receiver;
 	}
 
-	public void setCome(boolean isCome) {
-		this.isCome = isCome;
+	public void setReceiver(String receiver) {
+		this.receiver = receiver;
+	}
+
+	public String getSender() {
+		return sender;
+	}
+
+	public void setSender(String sender) {
+		this.sender = sender;
 	}
 
 	public boolean isNew() {
@@ -124,8 +135,9 @@ public class MessageModel {
 
 	@Override
 	public String toString() {
-		return "ChatMessageItem [email=" + email + ", msgType=" + msgType
+		return "ChatMessageItem [sender=" + sender +",receiver="+ receiver +", msgType=" + msgType
 				+ ", message=" + message + ", time=" + time + "]";
 	}
+
 
 }

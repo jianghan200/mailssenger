@@ -28,8 +28,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mailssenger.activity.MainActivity;
 import com.mailssenger.db.MailDB;
-import com.mailssenger.db.MessageDB;
-import com.mailssenger.db.RecentDB;
+import com.mailssenger.db.MsgDB;
+import com.mailssenger.db.ConvDB;
 import com.mailssenger.db.UserDB;
 import com.mailssenger.model.UserModel;
 import com.mailssenger.push.BaiduPush;
@@ -42,9 +42,7 @@ import com.mailssenger.util.SharedPreferencesUtil;
 
 /**
  * This is the entrance of the application
- * Global fucntion and variance is put here
- * When started, local file will be read and load to the global fucntion
- * copyright by Fm studio
+ * Global functions and variance is kept here
  */
 public class CommonApplication extends Application {
 
@@ -92,8 +90,8 @@ public class CommonApplication extends Application {
 	
 	public static MailDB dbOperation;
 	private UserDB mUserDB;
-	private MessageDB mMsgDB;
-	private RecentDB mRecentDB;
+	private MsgDB mMsgDB;
+	private ConvDB mConvDB;
 	private MediaPlayer mMediaPlayer;
 
 	private List<UserModel> mUserList;
@@ -134,9 +132,9 @@ public class CommonApplication extends Application {
 		
 		mSpUtil = new SharedPreferencesUtil(this, SP_FILE_NAME);
 		mUserDB = new UserDB(this);
-		mMsgDB = new MessageDB(this);
-		mRecentDB = new RecentDB(this);
-		mUserList = mUserDB.getUser();
+		mMsgDB = new MsgDB(this);
+		mConvDB = new ConvDB(this);
+		mUserList = mUserDB.getAll();
 		mMediaPlayer = MediaPlayer.create(this, R.raw.office);
 		mNotificationManager = (NotificationManager) getSystemService(android.content.Context.NOTIFICATION_SERVICE);
 
@@ -270,21 +268,21 @@ public class CommonApplication extends Application {
 		return mUserDB;
 	}
 
-	public synchronized RecentDB getRecentDB() {
-		if (mRecentDB == null)
-			mRecentDB = new RecentDB(this);
-		return mRecentDB;
+	public synchronized ConvDB getConvDB() {
+		if (mConvDB == null)
+			mConvDB = new ConvDB(this);
+		return mConvDB;
 	}
 
-	public synchronized MessageDB getMessageDB() {
+	public synchronized MsgDB getMsgDB() {
 		if (mMsgDB == null)
-			mMsgDB = new MessageDB(this);
+			mMsgDB = new MsgDB(this);
 		return mMsgDB;
 	}
 
 	public synchronized List<UserModel> getUserList() {
 		if (mUserList == null)
-			mUserList = getUserDB().getUser();
+			mUserList = getUserDB().getAll();
 		return mUserList;
 	}
 

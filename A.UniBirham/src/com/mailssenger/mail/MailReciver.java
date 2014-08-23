@@ -18,13 +18,10 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
 
-import com.mailssenger.util.L;
-import com.mailssenger.util.TimeUtil;
-
 import android.annotation.SuppressLint;
 
 /**  
- * reciver the email, with the attachment
+ * Receive the email, with the attachment
  * */  
 @SuppressLint("DefaultLocale")  
 public class MailReciver {  

@@ -9,6 +9,7 @@ import android.content.Intent;
 
 import com.mailssenger.activity.LoginActivity;
 import com.mailssenger.activity.MainActivity;
+import com.mailssenger.activity.MainActivityDrawer;
 import com.mailssenger.activity.SendMailActivity;
 import com.mailssenger.activity.WelcomeActivity;
 
@@ -38,6 +39,15 @@ public class UIHelper {
 			((Activity) context).finish();
 		}
 	}
+	
+	public static void showMainActivityDrawer(Context context, boolean finish) {
+		Intent intent = new Intent(context, MainActivityDrawer.class);
+		context.startActivity(intent);
+		if(finish){
+			((Activity) context).finish();
+		}
+	}
+	
 	
 	public static void showWelcomeActivity(Context context, boolean finish) {
 		Intent intent = new Intent(context, WelcomeActivity.class);

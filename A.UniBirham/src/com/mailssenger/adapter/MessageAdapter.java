@@ -28,7 +28,7 @@ import com.mailssenger.R;
 import com.mailssenger.activity.MailContentActivity;
 import com.mailssenger.activity.UserInfoActivity;
 import com.mailssenger.model.MailModel;
-import com.mailssenger.model.MessageModel;
+import com.mailssenger.model.MsgModel;
 import com.mailssenger.model.UserModel;
 import com.mailssenger.util.L;
 import com.mailssenger.util.SharedPreferencesUtil;
@@ -45,7 +45,7 @@ public class MessageAdapter extends BaseAdapter {
 
 	private Context mContext;
 	private LayoutInflater mInflater;
-	private List<MessageModel> mMsgList;
+	private List<MsgModel> mMsgList;
 	private SharedPreferencesUtil mSpUtil;
 	private Gson mGson;
 	
@@ -57,7 +57,7 @@ public class MessageAdapter extends BaseAdapter {
     public static final int TYPE_MAIL_RIGHT = 3;  
 
 
-	public MessageAdapter(Context context, List<MessageModel> msgList,UserModel hisUserModel) {
+	public MessageAdapter(Context context, List<MsgModel> msgList,UserModel hisUserModel) {
 		// TODO Auto-generated constructor stub
 		this.mContext = context;
 		mMsgList = msgList;
@@ -78,12 +78,12 @@ public class MessageAdapter extends BaseAdapter {
 		L.i("after remove mMsgList.size() = " + mMsgList.size());
 	}
 
-	public void setMessageList(List<MessageModel> msgList) {
+	public void setMessageList(List<MsgModel> msgList) {
 		mMsgList = msgList;
 		notifyDataSetChanged();
 	}
 
-	public void upDateMsg(MessageModel msg) {
+	public void upDateMsg(MsgModel msg) {
 		mMsgList.add(msg);
 		notifyDataSetChanged();
 	}
@@ -109,12 +109,15 @@ public class MessageAdapter extends BaseAdapter {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
-		MessageModel item = mMsgList.get(position);
-		boolean isCome = item.isCome();
+		MsgModel item = mMsgList.get(position);
+		
+		
+		boolean isCome = mSpUtil.getEmail().equals(item.getReceiver());
+		
 		int msgType = item.getMsgType();
 		ViewHolder holder;
 		
-		if(msgType == MessageModel.MESSAGE_TYPE_MAIL){
+		if(msgType == MsgModel.MESSAGE_TYPE_MAIL){
 			convertView = mInflater.inflate(R.layout.chat_item_left_mail, null);
 			holder = new ViewHolder();
 			holder.head = (ImageView) convertView.findViewById(R.id.icon);
@@ -131,7 +134,7 @@ public class MessageAdapter extends BaseAdapter {
 			// L.i("time: " + item.getDate());
 			holder.time.setVisibility(View.VISIBLE);
 
-			holder.head.setImageResource(CommonApplication.heads[item.getEmail().charAt(1)%18]);//头像设置
+			holder.head.setImageResource(CommonApplication.heads[item.getSender().charAt(1)%18]);//头像设置
 			if ( !mSpUtil.getShowHead()) {
 				holder.head.setVisibility(View.GONE);
 			}
@@ -155,7 +158,7 @@ public class MessageAdapter extends BaseAdapter {
 				@Override
 				public void onClick(View v) {
 					
-					MessageModel item = (MessageModel) getItem(position);
+					MsgModel item = (MsgModel) getItem(position);
 					Bundle bundle = new Bundle();
 					bundle.putString("mail",item.getMessage());
 					
@@ -181,7 +184,7 @@ public class MessageAdapter extends BaseAdapter {
 			});
 			
 		}
-		if(msgType == MessageModel.MESSAGE_TYPE_TEXT){
+		if(msgType == MsgModel.MESSAGE_TYPE_TEXT){
 			
 				if (convertView == null|| convertView.getTag(R.drawable.ic_launcher + position) == null) {
 					
@@ -207,7 +210,7 @@ public class MessageAdapter extends BaseAdapter {
 				holder.time.setVisibility(View.VISIBLE);
 	//			holder.head.setBackgroundResource(CommonApplication.heads[item
 	//					.getHeadImg()]);
-				holder.head.setImageResource(CommonApplication.heads[item.getEmail().charAt(1)%18]);//头像设置
+				holder.head.setImageResource(CommonApplication.heads[item.getSender().charAt(1)%18]);//头像设置
 				if ( !mSpUtil.getShowHead()) {
 					holder.head.setVisibility(View.GONE);
 				}

@@ -3,29 +3,43 @@ package com.mailssenger.model;
 import java.io.Serializable;
 
 import com.google.gson.annotations.Expose;
+import com.lidroid.xutils.db.annotation.Column;
+import com.lidroid.xutils.db.annotation.Id;
 
+/**
+ * @date 20140823
+ */
 public class UserModel implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	@Expose
+	@Id(column = "email")
 	private String email;//全局唯一 用户邮箱地址
 	@Expose
+	@Column(column = "userId")
 	private String userId;//
 	@Expose
+	@Column(column = "channelId")
 	private String channelId;//
 	@Expose
+	@Column(column = "nickName")
 	private String nickName;//昵称
 	@Expose
+	@Column(column = "emotion")
 	private String emotion;//心情
 	@Expose
+	@Column(column = "avatar")
 	private String avatar;//头像
 	@Expose
+	@Column(column = "region")
 	private String region;
 	@Expose
+	@Column(column = "sex")
 	private int sex;
 	@Expose
+	@Column(column = "userType")
 	private String userType;
 	
 	

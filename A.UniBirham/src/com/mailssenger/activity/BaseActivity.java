@@ -9,10 +9,10 @@ import android.support.v7.app.ActionBarActivity;
 
 import com.google.gson.Gson;
 import com.mailssenger.CommonApplication;
-import com.mailssenger.db.MessageDB;
-import com.mailssenger.db.RecentDB;
+import com.mailssenger.db.MsgDB;
+import com.mailssenger.db.ConvDB;
 import com.mailssenger.db.UserDB;
-import com.mailssenger.model.ConversationModel;
+import com.mailssenger.model.ConvModel;
 import com.mailssenger.service.MainService;
 import com.mailssenger.util.SharedPreferencesUtil;
 import com.umeng.analytics.MobclickAgent;
@@ -31,9 +31,11 @@ public class BaseActivity extends ActionBarActivity {
 	//初始化工具
 	protected CommonApplication mApplication;
 	protected SharedPreferencesUtil mSpUtil;
+	
 	protected UserDB mUserDB;
-	protected RecentDB mRecentDB;
-	protected MessageDB mMsgDB;
+	protected ConvDB mConvDB;
+	protected MsgDB mMsgDB;
+	
 	protected MediaPlayer mMediaPlayer;
 	protected Gson mGson;
 
@@ -60,8 +62,8 @@ public class BaseActivity extends ActionBarActivity {
 		mSpUtil = mApplication.getSpUtil();
 		mGson = mApplication.getGson();
 		mUserDB = mApplication.getUserDB();
-		mMsgDB = mApplication.getMessageDB();
-		mRecentDB = mApplication.getRecentDB();
+		mMsgDB = mApplication.getMsgDB();
+		mConvDB = mApplication.getConvDB();
 				
 		//友盟强制升级
 		UmengUpdateAgent.update(this);

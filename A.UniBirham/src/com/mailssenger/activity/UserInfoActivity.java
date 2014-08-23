@@ -9,8 +9,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.mailssenger.CommonApplication;
 import com.mailssenger.R;
-import com.mailssenger.db.MessageDB;
-import com.mailssenger.db.RecentDB;
+import com.mailssenger.db.MsgDB;
+import com.mailssenger.db.ConvDB;
 import com.mailssenger.db.UserDB;
 import com.mailssenger.model.MailModel;
 import com.mailssenger.model.UserModel;
@@ -35,8 +35,8 @@ public class UserInfoActivity extends BaseActivity {
 	private CommonApplication mApplication;
 	private SharedPreferencesUtil mSpUtil;
 	private UserDB mUserDB;
-	private RecentDB mRecentDB;
-	private MessageDB mMsgDB;
+	private ConvDB mConvDB;
+	private MsgDB mMsgDB;
 	private MediaPlayer mMediaPlayer;
 	private Gson mGson;
 
@@ -49,14 +49,14 @@ public class UserInfoActivity extends BaseActivity {
   		mSpUtil = mApplication.getSpUtil();
   		mGson = mApplication.getGson();
   		mUserDB = mApplication.getUserDB();
-  		mMsgDB = mApplication.getMessageDB();
-  		mRecentDB = mApplication.getRecentDB();
+  		mMsgDB = mApplication.getMsgDB();
+  		mConvDB = mApplication.getConvDB();
   		
 		//bundle, get data from caller
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
 			hisEmail = bundle.getString("hisEmail");
-			hisUserModel = mUserDB.getUser(hisEmail);
+			hisUserModel = mUserDB.getById(hisEmail);
 		}
 
         setContentView(R.layout.user_info);

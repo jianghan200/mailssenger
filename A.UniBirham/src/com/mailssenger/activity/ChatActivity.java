@@ -27,12 +27,12 @@ import android.widget.ImageButton;
 import com.google.gson.Gson;
 import com.mailssenger.CommonApplication;
 import com.mailssenger.adapter.MessageAdapter;
-import com.mailssenger.db.MessageDB;
-import com.mailssenger.db.RecentDB;
+import com.mailssenger.db.MsgDB;
+import com.mailssenger.db.ConvDB;
 import com.mailssenger.db.UserDB;
 import com.mailssenger.mail.MailSender;
-import com.mailssenger.model.ConversationModel;
-import com.mailssenger.model.MessageModel;
+import com.mailssenger.model.ConvModel;
+import com.mailssenger.model.MsgModel;
 import com.mailssenger.model.UserModel;
 import com.mailssenger.push.MyPushMessageReceiver;
 import com.mailssenger.util.L;
@@ -49,6 +49,7 @@ public class ChatActivity extends BaseActivity implements
 		IXListViewListener {
 	
 	private static String TAG = " >ChatActivity";
+	
 	public static final int NEW_MESSAGE = 0x001;// 收到消息
 
 	private static int MsgPagerNum;
@@ -75,17 +76,17 @@ public class ChatActivity extends BaseActivity implements
 				
 			}
 
+			//收动新信息
+			
 			// String message = (String) msg.obj;
-			MessageModel chatMessage = (MessageModel) msg.obj;
+			MsgModel chatMessage = (MsgModel) msg.obj;
 			//如果能跟用户聊天,那么数据库中一定有该用户
-			String hisEmail = chatMessage.getEmail();
+			String hisEmail = chatMessage.getReceiver();
 			//只处理自己的信息
 			if (!hisEmail.equals(hisUserModel.getEmail()))// 如果不是当前正在聊天对象的消息，不处理
 				return;
 			
-			chatMessage.setCome(true);	
-			
-			if(chatMessage.getMsgType() == MessageModel.MESSAGE_TYPE_TEXT){
+			if(chatMessage.getMsgType() == MsgModel.MESSAGE_TYPE_TEXT){
 
 				msgAdapter.upDateMsg(chatMessage);
 				
@@ -93,21 +94,24 @@ public class ChatActivity extends BaseActivity implements
 				// 发出去的时候,email 存接收人邮箱地址,isCome =false
 				// 接收信息的时候,email 为发送人地址, isCome = true
 				//以上为错误思想,无法解决   当他接收我发送消息,他无法知道是谁发给他的
+				
+				
+				//发送消息的时候，写自己的地址
 				L.e(TAG,mGson.toJson(chatMessage));
 				L.e(TAG,"save msg");
-				mMsgDB.saveMsg(hisEmail, chatMessage);
+				mMsgDB.save(chatMessage);
 
-				ConversationModel recentItem = new ConversationModel();
+				ConvModel recentItem = new ConvModel();
 				recentItem.setEmail(hisEmail);
 				recentItem.setName(hisUserModel.getNickName());
 				recentItem.setMessage(chatMessage.getMessage());
 				recentItem.setNewNum(0);
 				recentItem.setTime(System.currentTimeMillis());
 
-				mRecentDB.saveRecent(recentItem);
+				mConvDB.saveOrUpdate(recentItem);
 			}
 			
-			if(chatMessage.getMsgType() < MessageModel.MESSAGE_TYPE_MAIL){
+			if(chatMessage.getMsgType() < MsgModel.MESSAGE_TYPE_MAIL){
 				
 			}
 		}
@@ -169,30 +173,28 @@ public class ChatActivity extends BaseActivity implements
 		System.out.println(MyPushMessageReceiver.ehList);
 	}
 
-	private void initData() {
-
-	}
 
 	/**
 	 * 加载消息历史，从数据库中读出
 	 */
-	private List<MessageModel> initMsgData() {
-		List<MessageModel> list = mMsgDB.getMsg(hisUserModel.getEmail(),
-				MsgPagerNum);
-		List<MessageModel> msgList = new ArrayList<MessageModel>();// 消息对象数组
-		if (list.size() > 0) {
-			for (MessageModel entity : list) {
-				if (entity.getEmail().equals("")) {
-					entity.setEmail(hisUserModel.getEmail());
-				}
+	private List<MsgModel> initMsgData() {
+		List<MsgModel> list = mMsgDB.getAllMsgWith(hisUserModel.getEmail());
+		Log.i(TAG,"number of msg is "+list.size());
+		
+		List<MsgModel> msgList = new ArrayList<MsgModel>();// 消息对象数组
+		
+//		if (list.size() > 0) {
+//			for (MessageModel entity : list) {
+//				if (entity.getEmail().equals("")) {
+//					entity.setEmail(hisUserModel.getEmail());
+//				}
 //				if (entity.getHeadImg() < 0) {
 //					entity.setHeadImg(hisUserModel.getHeadIcon());
 //				}
-				msgList.add(entity);
-			}
-		}
-		return msgList;
-
+//				msgList.add(entity);
+//			}
+//		}
+		return list;
 	}
 
 
@@ -314,19 +316,24 @@ public class ChatActivity extends BaseActivity implements
 		case R.id.send_btn:// 发送消息
 			String msg = msgEt.getText().toString();
 			//如果用户的user id 不为空,否则默认邮件发送
-			if(!(hisUserModel.getUserId() == null)){
+			if((hisUserModel.getUserId() != null)){
 				if (isFaceShow) {
 					new Thread(sendMailRunnable).start();
 					break;
 					
 				}
-
+				
 				//发送信息,
 				//我发给对方,当然要写上自己的地址啊!
 				//这样对方收到才知道是我发给她的啊
 				//但是在只有发送方的地址的情况下,必须分开表
-				MessageModel msgItem = new MessageModel( mSpUtil.getEmail(),
-						MessageModel.MESSAGE_TYPE_TEXT, msg ,System.currentTimeMillis());
+				MsgModel msgItem = new MsgModel();
+				msgItem.setSender(mSpUtil.getEmail());
+				msgItem.setReceiver(hisUserModel.getEmail());
+				msgItem.setMsgType(MsgModel.MESSAGE_TYPE_TEXT);
+				msgItem.setMessage(msg);
+				msgItem.setTime(System.currentTimeMillis());
+
 			
 				msgAdapter.upDateMsg(msgItem);
 				// if (msgAdapter.getCount() - 10 > 10) {
@@ -338,7 +345,7 @@ public class ChatActivity extends BaseActivity implements
 				mMsgListView.setSelection(msgAdapter.getCount() - 1);
 				
 				//存信息,为自己发的信息,email 设为对方的地址,isCome 为false
-				mMsgDB.saveMsg(hisUserModel.getEmail(), msgItem);
+				mMsgDB.save(msgItem);
 				msgEt.setText("");
 				
 				L.e(mGson.toJson(msgItem));
@@ -346,9 +353,9 @@ public class ChatActivity extends BaseActivity implements
 				new SendMsgAsyncTask(mGson.toJson(msgItem), hisUserModel.getUserId())
 						.send();
 				
-				ConversationModel recentItem = new ConversationModel(hisUserModel.getEmail(), hisUserModel.getAvatar(), hisUserModel.getNickName(),
+				ConvModel recentItem = new ConvModel(hisUserModel.getEmail(), hisUserModel.getAvatar(), hisUserModel.getNickName(),
 						msg, 0, System.currentTimeMillis());
-				mRecentDB.saveRecent(recentItem);
+				mConvDB.saveOrUpdate(recentItem);
 			}else{
 //				直接邮件发送
 				new Thread(sendMailRunnable).start();
@@ -396,7 +403,7 @@ public class ChatActivity extends BaseActivity implements
 	public void onRefresh() {
 		// TODO Auto-generated method stub
 		MsgPagerNum++;
-		List<MessageModel> msgList = initMsgData();
+		List<MsgModel> msgList = initMsgData();
 		int position = msgAdapter.getCount();
 		msgAdapter.setMessageList(msgList);
 		mMsgListView.stopRefresh();
@@ -414,7 +421,7 @@ public class ChatActivity extends BaseActivity implements
 
 	//收到聊天信息
 	@Override
-	public void onChatMessage(MessageModel chatMessage) {
+	public void onChatMessage(MsgModel chatMessage) {
 		//obtainMessage()
 		//Value to assign to the returned Message.what field.
 		Message handlerMsg = handler.obtainMessage(NEW_MESSAGE);
@@ -479,7 +486,7 @@ public class ChatActivity extends BaseActivity implements
 //				recentItem.setNewNum(0);
 //				recentItem.setTime(System.currentTimeMillis());
 //
-//				mRecentDB.saveRecent(recentItem);
+//				mConvDB.saveRecent(recentItem);
 				
 				
 			} catch (Exception e) {

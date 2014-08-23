@@ -47,6 +47,9 @@
         <activity android:name="com.mailssenger.activity.MainActivity" android:screenOrientation="portrait">
         </activity>
         
+           <activity android:name="com.mailssenger.activity.MainActivityDrawer" android:screenOrientation="portrait">
+        </activity>
+        
         <activity android:name="com.mailssenger.activity.LoginActivity" android:screenOrientation="portrait" android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
@@ -60,19 +63,7 @@
         
         <activity android:name="com.mailssenger.activity.UserInfoActivity" android:screenOrientation="portrait" android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
-        
-        <activity android:name="com.ipaulpro.afilechooser.FileChooserActivity" android:icon="@drawable/ic_chooser" android:label="@string/chooser_title">
-            <intent-filter>
-                <action android:name="android.intent.action.GET_CONTENT" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.OPENABLE" />
-
-                <data android:mimeType="*/*" />
-            </intent-filter>
-        </activity>
-        
-        
         
         <activity android:name=".search.MySearchableActivity">
             <intent-filter>

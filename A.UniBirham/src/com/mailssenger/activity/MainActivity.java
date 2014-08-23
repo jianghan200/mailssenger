@@ -9,8 +9,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.SearchView;
-import android.util.DisplayMetrics;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,23 +23,19 @@ import com.mailssenger.MainServiceCallback;
 import com.mailssenger.R;
 import com.mailssenger.Task;
 import com.mailssenger.adapter.RecentAdapter;
-import com.mailssenger.db.RecentDB;
+import com.mailssenger.db.ConvDB;
 import com.mailssenger.db.UserDB;
 import com.mailssenger.fragment.ConvFragment;
-import com.mailssenger.fragment.RightFragment;
-import com.mailssenger.fragment.SlidingMenuLeft;
 import com.mailssenger.mail.MailAccount;
-import com.mailssenger.model.ConversationModel;
-import com.mailssenger.model.MessageModel;
+import com.mailssenger.model.ConvModel;
+import com.mailssenger.model.MsgModel;
 import com.mailssenger.model.UserModel;
 import com.mailssenger.push.MyPushMessageReceiver;
 import com.mailssenger.search.MySearchableActivity;
 import com.mailssenger.service.MainService;
-import com.mailssenger.slidinglayer.SlidingLayer;
 import com.mailssenger.util.L;
 import com.mailssenger.util.NetUtil;
 import com.mailssenger.util.T;
-import com.slidingmenu.lib.SlidingMenu;
 
 public class MainActivity extends BaseActivity implements OnClickListener,
 MyPushMessageReceiver.EventHandler, MainServiceCallback,PopupMenu.OnMenuItemClickListener{
@@ -51,19 +45,11 @@ MyPushMessageReceiver.EventHandler, MainServiceCallback,PopupMenu.OnMenuItemClic
 
 	ConvFragment convFragment = null;
 	
-	private LinkedList<ConversationModel> mRecentDatas;
+	private LinkedList<ConvModel> mRecentDatas;
 	private RecentAdapter mRecentAdapter;
-	
-	//sliding menu
-	private static SlidingMenu slidingMenu;
-	
-	private int mScreenWidth;
 		
 	//网络提醒
 	private View mNetErrorView;
-	
-	//
-	RightFragment mFragRight; 
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +61,8 @@ MyPushMessageReceiver.EventHandler, MainServiceCallback,PopupMenu.OnMenuItemClic
 		setTitle("Mailssenger");
 		
 		mApplication.setHandler(handler);
-		mRecentDatas = new LinkedList<ConversationModel>();
-		mRecentDatas = mRecentDB.getRecentList();
+		mRecentDatas = new LinkedList<ConvModel>();
+		mRecentDatas = mConvDB.getRecentList();
 		mRecentAdapter = new RecentAdapter(this);
 		mRecentAdapter.setData(mRecentDatas);
 	
@@ -95,19 +81,15 @@ MyPushMessageReceiver.EventHandler, MainServiceCallback,PopupMenu.OnMenuItemClic
     	});
 		
 	
-	  	
 		getSupportFragmentManager().beginTransaction()
 		.replace(R.id.main_frame, new ConvFragment(mRecentAdapter)).commit();
 		
-    	initSlidingMenu();
-    	
 
 		// get some bsaic data
         Task task = new Task(context);
         task.setMethod(MailAccount.class, "getLatestMails","inbox", (Integer)10);
         MainService.newTask(task);
         
-     
 	}
 
 	@Override
@@ -154,72 +136,7 @@ MyPushMessageReceiver.EventHandler, MainServiceCallback,PopupMenu.OnMenuItemClic
 		L.e(TAG,"I am paused");
 		System.out.println(MyPushMessageReceiver.ehList);
 	}
-	
-
-	
-	
-	
-	public void initSlidingMenu(){
 		
-//		DisplayMetrics dm = new DisplayMetrics();
-//		getWindowManager().getDefaultDisplay().getMetrics(dm);
-//		int mScreenWidth = dm.widthPixels;// 获取屏幕分辨率宽度
-//		// TODO Auto-generated method stub
-//		setBehindContentView(R.layout.main_left_layout);// 设置左菜单
-//		FragmentTransaction mFragementTransaction = getSupportFragmentManager()
-//				.beginTransaction();
-//		Fragment mFrag = new LeftFragment();
-//		mFragementTransaction.replace(R.id.main_left_fragment, mFrag);
-//		mFragementTransaction.commit();
-//		// customize the SlidingMenu
-//		mSlidingMenu = getSlidingMenu();
-//		mSlidingMenu.setMode(SlidingMenu.LEFT_RIGHT);// 设置是左滑还是右滑，还是左右都可以滑，我这里左右都可以滑
-//		mSlidingMenu.setShadowWidth(mScreenWidth / 40);// 设置阴影宽度
-//		mSlidingMenu.setBehindOffset(mScreenWidth / 8);// 设置菜单宽度
-//		mSlidingMenu.setFadeDegree(0.35f);// 设置淡入淡出的比例
-//		mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-//		mSlidingMenu.setShadowDrawable(R.drawable.slidingmenu_shadow);// 设置左菜单阴影图片
-//		mSlidingMenu.setSecondaryShadowDrawable(R.drawable.right_shadow);// 设置右菜单阴影图片
-//		mSlidingMenu.setFadeEnabled(true);// 设置滑动时菜单的是否淡入淡出
-//		mSlidingMenu.setBehindScrollScale(0.333f);// 设置滑动时拖拽效果
-		// set up sliding menu
-		
-		DisplayMetrics dm = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(dm);
-		mScreenWidth = dm.widthPixels;// 获取屏幕分辨率宽度
-		
-		slidingMenu = new SlidingMenu(context);
-		slidingMenu.setMode(SlidingMenu.LEFT);
-		
-		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-		
-		slidingMenu.setShadowDrawable(R.drawable.slidingmenu_shadow);
-		slidingMenu.setShadowWidth(mScreenWidth / 40);// 设置阴影宽度
-		slidingMenu.setBehindOffset(mScreenWidth / 8);// 设置菜单宽度
-		
-//		slidingMenu.setShadowWidth(0);// 设置阴影宽度
-//		slidingMenu.setBehindOffset(0);// 设置菜单宽度
-		
-		slidingMenu.setFadeDegree(0.35f);
-		slidingMenu.attachToActivity(context, SlidingMenu.SLIDING_CONTENT);
-		slidingMenu.setMenu(R.layout.slidingmenu_left_layout);
-		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.main_left_fragment, new SlidingMenuLeft()).commit();
-
-//		slidingMenu.setSecondaryMenu(R.layout.slidingmenu_right_layout);
-//		FragmentTransaction mFragementTransaction = getSupportFragmentManager()
-//				.beginTransaction();
-//		mFragRight = new RightFragment();
-//		mFragementTransaction.replace(R.id.main_right_fragment, mFragRight);
-//		mFragementTransaction.commit();
-		
-//		slidingMenu.setSecondaryMenu(R.layout.slidingmenu_right_frame);
-//		slidingMenu
-//				.setSecondaryShadowDrawable(R.drawable.slidingmenu_shadowright);
-//		getSupportFragmentManager().beginTransaction()
-//				.replace(R.id.slidingmenu_right, new RightFragment()).commit();
-	}
-	
 		
 	public static int UPDATE_CHATS=100;
 	public static int UPDATE_GROUPS=101;
@@ -240,55 +157,54 @@ MyPushMessageReceiver.EventHandler, MainServiceCallback,PopupMenu.OnMenuItemClic
 			switch (msg.what) {
 				
 				
-				case MessageModel.MESSAGE_TYPE_NEW_USER:
+				case MsgModel.MESSAGE_TYPE_NEW_USER:
 					
 					UserModel u = (UserModel) msg.obj;
-					mUserDB.addUser(u);
+					mUserDB.save(u);
 					T.showShort(mApplication, "好友列表已更新!");
 					
 					//Demo 数据
-					ConversationModel recentItem = new ConversationModel();
+					ConvModel recentItem = new ConvModel();
 					recentItem.setEmail(u.getEmail());
 					recentItem.setName(u.getNickName());
 					recentItem.setMessage("Hi~ I am"+u.getNickName());
 					recentItem.setNewNum(0);
 					recentItem.setTime(System.currentTimeMillis());
-					mRecentDB.saveRecent(recentItem);
+					mConvDB.saveOrUpdate(recentItem);
 					
 					updateConvFragment();
 					
 
 					break;
 					
-				case MessageModel.MESSAGE_TYPE_TEXT:
+				case MsgModel.MESSAGE_TYPE_TEXT:
 					
-					//设定新消息
-					MessageModel msgItem = (MessageModel) msg.obj;
-					String email = msgItem.getEmail();
-					String content = msgItem.getMessage();
+					//接收到新的消息
+					MsgModel msgItem = (MsgModel) msg.obj;
 					msgItem.setNew(true);
-					msgItem.setCome(true);
 					
-					//只有存在好友关系,才可以发文本信息,所以受到文本消息的时候,用户必然存在
-					UserModel user = mUserDB.selectInfo(email);
+					String hisEmail = msgItem.getSender();
+					
+					//只有存在好友关系,才可以发文本信息,所以收到文本消息的时候,用户必然存在
+					UserModel user = mUserDB.getById(hisEmail);
 					if(user!=null){
 						
 					}
 					
 					L.e(TAG,mGson.toJson(msgItem));
 					L.e(TAG,"save msg");
-					mMsgDB.saveMsg(user.getEmail(), msgItem);
+					mMsgDB.save(msgItem);
 					
-					recentItem = new ConversationModel(email, user.getAvatar(), user.getNickName(),
+					recentItem = new ConvModel(hisEmail, user.getAvatar(), user.getNickName(),
 							msgItem.getMessage(), 0, System.currentTimeMillis());
 					
-					mRecentDB.saveRecent(recentItem);
+					mConvDB.saveOrUpdate(recentItem);
 					
 					
 					L.e(TAG,"I will be in updateConvFragment()");
 					updateConvFragment();
 //					mRecentAdapter.addFirst(recentItem);
-					T.showShort(mApplication, user.getNickName() + ":" + content);
+					T.showShort(mApplication, user.getNickName() + ":" + msgItem.getMessage());
 					break;
 				default:
 					break;
@@ -300,9 +216,9 @@ MyPushMessageReceiver.EventHandler, MainServiceCallback,PopupMenu.OnMenuItemClic
 
 
 	@Override
-	public void onChatMessage(MessageModel chatMessage) {
+	public void onChatMessage(MsgModel chatMessage) {
 		//将得到的消息交给handler处理
-		Message handlerMsg = handler.obtainMessage(MessageModel.MESSAGE_TYPE_TEXT);
+		Message handlerMsg = handler.obtainMessage(MsgModel.MESSAGE_TYPE_TEXT);
 		handlerMsg.obj = chatMessage;
 		handler.sendMessage(handlerMsg);
 	}
@@ -324,7 +240,7 @@ MyPushMessageReceiver.EventHandler, MainServiceCallback,PopupMenu.OnMenuItemClic
 ////				recentItem.setNewNum(0);
 ////				recentItem.setTime(System.currentTimeMillis());
 ////
-////				mRecentDB.saveRecent(recentItem);
+////				mConvDB.saveRecent(recentItem);
 //				
 //				L.e(TAG,"add initial data");
 //				initialUserDB();
@@ -364,27 +280,7 @@ MyPushMessageReceiver.EventHandler, MainServiceCallback,PopupMenu.OnMenuItemClic
 		
 	}
 	
-	/**
-	 * rewrite the menu button
-	 */
-	 @Override
-	 public boolean onKeyDown(int keyCode, KeyEvent event) {
 	
-		 if (keyCode == KeyEvent.KEYCODE_MENU) {
-			 if (slidingMenu.isMenuShowing()) {
-				 slidingMenu.showContent();
-			 } else {
-				slidingMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-				slidingMenu.showMenu();
-				slidingMenu.setBehindOffset(mScreenWidth / 8);// 设置菜单宽度
-			 }
-			 return false;
-			 }
-		 return super.onKeyDown(keyCode, event);
-		
-	 }
-	
-	 
 		/**
 		 * 连续按两次返回键就退出
 		 */
@@ -394,35 +290,20 @@ MyPushMessageReceiver.EventHandler, MainServiceCallback,PopupMenu.OnMenuItemClic
 	 */
 	@Override
 	public void onBackPressed() {
-		//if menu is showing, hide ,else quit
-		if (slidingMenu.isMenuShowing()) {
-			
-			if(mFragRight!=null){
-				SlidingLayer mSlidingLayer = mFragRight.getSlidingLayer();
-				if(mSlidingLayer != null && mSlidingLayer.isOpened()){
-					mSlidingLayer.removeAllViews();
-					mSlidingLayer.closeLayer(true);
-					return;
-				}
-			}
-			
-			slidingMenu.showContent();
+		
+		if (System.currentTimeMillis() - firstTime < 3000) {
+			mApplication.showNotification();
+			// if (!mSpUtil.getMsgNotify() && PushManager.isPushEnabled(this))
+			// PushManager.stopWork(this);
+			finish();
 		} else {
-			
-			if (System.currentTimeMillis() - firstTime < 3000) {
-				mApplication.showNotification();
-				// if (!mSpUtil.getMsgNotify() && PushManager.isPushEnabled(this))
-				// PushManager.stopWork(this);
-				finish();
-			} else {
-				firstTime = System.currentTimeMillis();
-				if (mSpUtil.getMsgNotify())
-					T.showShort(this, R.string.press_again_backrun);
-				else
-					T.showShort(this, R.string.press_again_exit);
-			}
-
+			firstTime = System.currentTimeMillis();
+			if (mSpUtil.getMsgNotify())
+				T.showShort(this, R.string.press_again_backrun);
+			else
+				T.showShort(this, R.string.press_again_exit);
 		}
+
 	}
 	
 
@@ -445,60 +326,59 @@ MyPushMessageReceiver.EventHandler, MainServiceCallback,PopupMenu.OnMenuItemClic
 			T.dShowShort(context, "I am updating!");
 		}
 
-		
 	}
 	
 	public void updateChatListView(){
-//		mRecentDatas = mRecentDB.getRecentList();
+//		mRecentDatas = mConvDB.getRecentList();
 //		mRecentAdapter.setData(mRecentDatas);
 //		mRecentAdapter.notifyDataSetChanged();
 	}
 	
     public void initialUserDB(){
    	UserDB mUserDB =CommonApplication.getInstance().getUserDB();
-   	RecentDB mRecentDB=CommonApplication.getInstance().getRecentDB();
+   	ConvDB mConvDB=CommonApplication.getInstance().getConvDB();
 		
 		UserModel u  = new UserModel();
 		u.setEmail("1129966399@qq.com");
 		u.setNickName("Han Jiang");			
-		mUserDB.addUser(u);
+		mUserDB.save(u);
 		
 		u = new UserModel();
 		u.setEmail("zxm024@bham.ac.uk");
 		u.setNickName("Kenny Ma");			
-		mUserDB.addUser(u);
+		mUserDB.save(u);
 		
 		u = new UserModel();
 		u.setEmail("HYW399@cs.bham.ac.uk");
 		u.setNickName("Bowie");			
-		mUserDB.addUser(u);
+		mUserDB.save(u);
 		
 		u = new UserModel();
 		u.setEmail("TYL375@cs.bham.ac.uk‎");
 		u.setNickName("Issac");			
-		mUserDB.addUser(u);
+		mUserDB.save(u);
 		
 		u = new UserModel();
 		u.setEmail("YXF373@cs.bham.ac.uk");
 		u.setNickName("Seffy");			
-		mUserDB.addUser(u);
+		mUserDB.save(u);
 		
 		//Demo 数据
-		ConversationModel recentItem = new ConversationModel();
+		ConvModel recentItem = new ConvModel();
 		recentItem.setEmail("zxm024@bham.ac.uk");
 		recentItem.setName("Kenny Ma");
 		recentItem.setMessage("Here is Kenny");
 		recentItem.setNewNum(0);
 		recentItem.setTime(System.currentTimeMillis());
-		mRecentDB.saveRecent(recentItem);
+		mConvDB.saveOrUpdate(recentItem);
 
-		recentItem = new ConversationModel();
+		recentItem = new ConvModel();
 		recentItem.setEmail("1129966399@qq.com");
 		recentItem.setName("Han Jiang");
 		recentItem.setMessage("It is a Chinese name");
 		recentItem.setNewNum(0);
 		recentItem.setTime(System.currentTimeMillis());
-		mRecentDB.saveRecent(recentItem);
+		mConvDB.saveOrUpdate(recentItem);
 
     }
 
@@ -511,7 +391,9 @@ MyPushMessageReceiver.EventHandler, MainServiceCallback,PopupMenu.OnMenuItemClic
 //    	   }
 //    	   L.i(TAG,"updateRecentListView");
 //    	   convFragment.updateRecentListView();
-    	mRecentDatas = mRecentDB.getRecentList();
+    	mRecentDatas = mConvDB.getRecentList();
+    	
+    	
 		mRecentAdapter.setData(mRecentDatas);
 		mRecentAdapter.notifyDataSetChanged();
     }
@@ -524,77 +406,60 @@ MyPushMessageReceiver.EventHandler, MainServiceCallback,PopupMenu.OnMenuItemClic
 	 
 //	    MenuItem searchItem = menu.findItem(R.id.action_search);
 //	    mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-////        if(this instanceof MainActivity){
-//        	 mSearchView.setOnQueryTextListener(this);
-////        }
-	   
-//        search view	
-	    
-	    
+//        mSearchView.setOnQueryTextListener(this);
+
+	  	    
 //        	SearchManager searchManager =  (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 //             
-//            MenuItem searchItem = menu.findItem(R.id.action_search);
+//          MenuItem searchItem = menu.findItem(R.id.action_search);
 //     	    mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-//            mSearchView.setSearchableInfo( 
+//          mSearchView.setSearchableInfo( 
 //             		searchManager.getSearchableInfo(getComponentName()));
 	    
-	    
-
 	    return true;
-	    
-	    
+	      
 	}
-	/*
-	 * add action for menu item is clicked (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
-	 */
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
-		switch (item.getItemId()) {
 		
+		switch (item.getItemId()) {
+		//加号按键监听
 		case R.id.action_add:
-			
-    		
 			showPopup();
             return true;
+        //搜索按钮监听
         case R.id.action_search:
         	Intent intent = new Intent(context, MySearchableActivity.class);
     		context.startActivity(intent);
 //			onSearchRequested();
 //			startSearch("", false, null, false);
-//            mSearchView.setIconified(false);
+//          mSearchView.setIconified(false);
             return true;
-//        case android.R.id.home:
-//        	Toast.makeText(this, "Hello ", Toast.LENGTH_LONG).show();
-//            break;
+        //主按键监听
         case android.R.id.home:
-        	if (slidingMenu.isMenuShowing()) {
-				slidingMenu.showContent();
-			} else {
-				 slidingMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-				slidingMenu.showMenu();
-				slidingMenu.setBehindOffset(mScreenWidth / 8);// 设置菜单宽度
-			}
-		
+        	Toast.makeText(this, "Hello ", Toast.LENGTH_LONG).show();
+        	break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-
+	/**
+	 * Show Popup Menu
+	 */
     public void showPopup(){
         View menuItemView = findViewById(R.id.action_add);
         PopupMenu popup = new PopupMenu(this, menuItemView);
         MenuInflater inflate = popup.getMenuInflater();
         inflate.inflate(R.menu.popup, popup.getMenu());
         popup.show();
-        
-
     }
 
 	@Override
 	public boolean onMenuItemClick(MenuItem item) {
+		/*
+		 * 子菜单项的点击监听
+		 */
 		
 		switch (item.getItemId()) {
 			case R.id.add_contact:
@@ -609,8 +474,6 @@ MyPushMessageReceiver.EventHandler, MainServiceCallback,PopupMenu.OnMenuItemClic
 				break;
 		}
 		
-			
-		// TODO Auto-generated method stub
 		return false;
 	}
 

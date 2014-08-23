@@ -17,10 +17,10 @@ import com.google.gson.Gson;
 import com.mailssenger.CommonApplication;
 import com.mailssenger.R;
 import com.mailssenger.activity.ChatActivity;
-import com.mailssenger.db.MessageDB;
-import com.mailssenger.db.RecentDB;
+import com.mailssenger.db.MsgDB;
+import com.mailssenger.db.ConvDB;
 import com.mailssenger.db.UserDB;
-import com.mailssenger.model.ConversationModel;
+import com.mailssenger.model.ConvModel;
 import com.mailssenger.model.MailModel;
 import com.mailssenger.model.UserModel;
 import com.mailssenger.util.L;
@@ -38,23 +38,23 @@ public class RecentAdapter extends BaseAdapter {
 	SharedPreferencesUtil mSpUtil = mApplication.getSpUtil();
 	Gson mGson = mApplication.getGson();
 	UserDB mUserDB = mApplication.getUserDB();
-	MessageDB mMsgDB = mApplication.getMessageDB();
-	RecentDB mRecentDB = mApplication.getRecentDB();
+	MsgDB mMsgDB = mApplication.getMsgDB();
+	ConvDB mConvDB = mApplication.getConvDB();
 	
 	private LayoutInflater mInflater;
 	
-	private LinkedList<ConversationModel> mData;
+	private LinkedList<ConvModel> mData;
 	private Context context;
 	
 	public RecentAdapter(Context context) {
 		this.context = context;
 		this.mInflater = LayoutInflater.from(context);
-		mMsgDB = CommonApplication.getInstance().getMessageDB();
-		mRecentDB = CommonApplication.getInstance().getRecentDB();
+		mMsgDB = CommonApplication.getInstance().getMsgDB();
+		mConvDB = CommonApplication.getInstance().getConvDB();
 		mUserDB = CommonApplication.getInstance().getUserDB();
 	}
 	
-	public void setData(LinkedList<ConversationModel> data) {
+	public void setData(LinkedList<ConvModel> data) {
 		mData = data;
 	}
 	
@@ -65,14 +65,14 @@ public class RecentAdapter extends BaseAdapter {
 		}
 	}
 
-	public void remove(ConversationModel item) {
+	public void remove(ConvModel item) {
 		if (mData.contains(item)) {
 			mData.remove(item);
 			notifyDataSetChanged();
 		}
 	}
 
-	public void addFirst(ConversationModel item) {
+	public void addFirst(ConvModel item) {
 		if (mData.contains(item)) {
 			mData.remove(item);
 		}
@@ -133,7 +133,7 @@ public class RecentAdapter extends BaseAdapter {
 		}
 		
 		//
-		ConversationModel item = mData.get(position);
+		ConvModel item = mData.get(position);
 		
 		String name = item.getName();
 		if(name==null||name.equals("")){
@@ -174,9 +174,9 @@ public class RecentAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 
-				ConversationModel item = mData.get(position);
+				ConvModel item = mData.get(position);
 				
-				UserModel u = mUserDB.selectInfo(item.getEmail());
+				UserModel u = mUserDB.getById(item.getEmail());
 
 				T.dShowLong(context, mGson.toJson(u));
 				//清空所有新消息

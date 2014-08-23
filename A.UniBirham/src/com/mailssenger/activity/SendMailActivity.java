@@ -1,19 +1,5 @@
 package com.mailssenger.activity;
 
-import java.io.File;
-import java.util.Set;
-
-import com.ipaulpro.afilechooser.utils.FileUtils;
-import com.mailssenger.CommonApplication;
-import com.mailssenger.Task;
-import com.mailssenger.mail.MailSender;
-import com.mailssenger.service.MainService;
-import com.mailssenger.util.TaskHelper;
-
-import com.mailssenger.R;
-import android.app.Activity;
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +8,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.mailssenger.CommonApplication;
+import com.mailssenger.R;
+import com.mailssenger.mail.MailSender;
 
 /**
  * http://www.javacodegeeks.com/2013/10/send-email-with-attachment-in-android.
@@ -58,62 +48,13 @@ public class SendMailActivity extends BaseActivity implements OnClickListener {
 		btnSend.setOnClickListener(this);
 		btnAttachment.setOnClickListener(this);
 	}
-	/**
-	 * show the attchment chooser
-	 */
-	private void showChooser() {
-		// Use the GET_CONTENT intent from the utility class
-		Intent target = FileUtils.createGetContentIntent();
-		// Create the chooser Intent
-		Intent intent = Intent.createChooser(target, "Chooser Title");
-		try {
-			startActivityForResult(intent, REQUEST_CODE);
-		} catch (ActivityNotFoundException e) {
-			// The reason for the existence of aFileChooser
-		}
-	}
-
 	
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		switch (requestCode) {
-		case REQUEST_CODE:
-			// If the file selection was successful
-			if (resultCode == RESULT_OK) {
-				
-				//file chose success then convert uri to string 
-				if (data != null) {
-					// Get the URI of the selected file
-					final Uri uri = data.getData();
-					URI = uri;
-
-					try {
-						// Create a file instance from the URI
-						final File file = FileUtils.getFile(uri);
-						// Toast.makeText(SendMailActivity.this,
-						// "File Selected: "+file.getAbsolutePath(),
-						// Toast.LENGTH_LONG).show();
-						
-						//send the new mail
-						Toast.makeText(SendMailActivity.this,
-								"File Selected: " + URI.toString(),
-								Toast.LENGTH_LONG).show();
-					} catch (Exception e) {
-						Log.e("FileSelectorTestActivity", "File select error",
-								e);
-					}
-				}
-			}
-			break;
-		}
-		super.onActivityResult(requestCode, resultCode, data);
-	}
 
 	@Override
 	public void onClick(View v) {
 
 		if (v == btnAttachment) {
-			showChooser();
+			
 		}
 		if (v == btnSend) {
 			try {

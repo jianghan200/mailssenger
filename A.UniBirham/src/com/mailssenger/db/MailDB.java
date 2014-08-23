@@ -12,28 +12,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.tsz.afinal.FinalDb;
 import android.content.Context;
 
-import com.mailssenger.CommonApplication;
+import com.lidroid.xutils.db.sqlite.Selector;
+import com.lidroid.xutils.exception.DbException;
 import com.mailssenger.model.MailModel;
 
-public class MailDB {
+/**
+ * @date 20140823
+ * @author Han
+ *
+ */
+public class MailDB extends BaseDB{
 
-	private FinalDb db;
-	//construct;
+	
 	public MailDB(Context mContext) {
-		super();
-		this.db = FinalDb.create(mContext, CommonApplication.DB_NAME, true);
+		super(mContext);
 	}
 	
-	/*
-	 * save one mail model
-	 */
-	public void save(MailModel mail){
-		db.save(mail);
-//		UIHelper.updateMainListAvtivityView();
-	}
+
 	
 	/*
 	 *mark mail as read in the local data base
@@ -42,28 +39,54 @@ public class MailDB {
 		MailModel mail=new MailModel();
 		mail.setFlags("read");
 		mail.setUid(uid);
-		db.update(mail,"uid = "+uid +" AND folder ='"+"inbox"+"'");
-//		UIHelper.updateMainListAvtivityView();
+		
+//		db.update(entity, new WhereBuilder(, updateColumnNames);
+//		db.update(mail,"uid = "+uid +" AND folder ='"+"inbox"+"'");
 	}
 	
 	
-	/*
-	 *update mail with downloda content
+	/**
+	 * update mail with download content
+	 * @param uid
+	 * @param content
 	 */
 	public void updateMailContent(int uid, String content){
 		System.out.println("::updateMailContent::");
+		
 		MailModel mail=new MailModel();
+		try {
+			mail = db.findFirst(Selector.from(MailModel.class).where("uid", "=", uid));
+		} catch (DbException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		mail.setContent(content);
-		mail.setUid(uid);
-		db.update(mail,"uid = "+uid);
+		try {
+			db.update(mail);
+		} catch (DbException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	/*
+	/**
 	 *get mail form local database with messageId
 	 */
 	public List<MailModel> getMailByMessageIDFromLocal(String messageId){
 
-		List<MailModel> mailist = db.findAllByWhere(MailModel.class,"messageId = '"+messageId+"'");
+		
+//		List<DbModel> dbModels = db.findDbModelAll(Selector.from(Parent.class)
+//                .groupBy("name")
+//                .select("name", "count(name) as count"));
+		
+		List<MailModel> mailist = null;
+		try {
+			mailist = db.findAll(Selector.from(MailModel.class).where("messageID", "=", messageId));
+		} catch (DbException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 
 		return mailist;
 	}
@@ -75,14 +98,28 @@ public class MailDB {
 	 */
 	public Set<Integer> loadUIDSet(String folderName) {
 		Set<Integer> uid_set = new HashSet<Integer>();
-		List<MailModel> mailist = db.findAllByWhere(MailModel.class," folder ='"+folderName+"'");
-		int len = mailist.size();
-		if (len>0){
-			for (int j = 0; j < len; j++) {
-				uid_set.add(mailist.get(j).getUid());
-			}
+		
+		List<MailModel> mailist = null;
+		try {
+			mailist = db.findAll(Selector.from(MailModel.class).where("folder", "=", folderName));
+			
+			
+		} catch (DbException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		System.out.println("::loadUIDSet:: "+ folderName + uid_set);
+//		List<MailModel> mailist = db.findAllByWhere(MailModel.class," folder ='"+folderName+"'");
+		
+		if(mailist!=null){
+			int len = mailist.size();
+			if (len>0){
+				for (int j = 0; j < len; j++) {
+					uid_set.add(mailist.get(j).getUid());
+				}
+			}
+			System.out.println("::loadUIDSet:: "+ folderName + uid_set);
+		}
+		
 		return uid_set;
 	}
 	
@@ -93,8 +130,14 @@ public class MailDB {
 	public List<Map<String, Object>> loadMailData(String folderName) {
 
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		
-		List<MailModel> mailist = db.findAllByWhere(MailModel.class,"folder = '"+ folderName +"' ORDER BY uid DESC");
+		List<MailModel> mailist = null;
+		try {
+			mailist = db.findAll(Selector.from(MailModel.class).where("folder", "=", folderName).orderBy("uid",true));
+		} catch (DbException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		List<MailModel> mailist = db.findAllByWhere(MailModel.class,"folder = '"+ folderName +"' ORDER BY uid DESC");
 		
 		//limit 20
 		//List<MailModel> mailist = db.findAll(MailModel.class,"uid DESC limit 20");
@@ -139,7 +182,12 @@ public class MailDB {
 		Iterator<MailModel> it = list.iterator();
 		while (it.hasNext()) {
 			MailModel mailModel = (MailModel) it.next();
-			db.save(mailModel);
+			try {
+				db.save(mailModel);
+			} catch (DbException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 	}

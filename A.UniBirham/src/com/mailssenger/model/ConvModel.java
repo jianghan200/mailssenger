@@ -1,22 +1,38 @@
 package com.mailssenger.model;
 
-import com.mailssenger.R;
+import com.lidroid.xutils.db.annotation.Column;
+import com.lidroid.xutils.db.annotation.Id;
 
-
-
-public class ConversationModel implements Comparable<ConversationModel> {
+/**
+ * @date 20140823
+ * @author Han
+ *
+ */
+public class ConvModel implements Comparable<ConvModel> {
+	
+	@Id(column = "email")
 	private String email;
+	
+	@Column(column = "avatar")
 	private String avatar;// 头像
+	
+	@Column(column = "name")
 	private String name;// 消息来自
+	
+	@Column(column = "message")
 	private String message;// 消息内容
+	
+	@Column(column = "newNum")
 	private int newNum;// 新消息数目
+	
+	@Column(column = "time")
 	private long time;// 消息日期
 
 
-	public ConversationModel() {
+	public ConvModel() {
 	}
 
-	public ConversationModel(String email, String avatar, String name, String message,
+	public ConvModel(String email, String avatar, String name, String message,
 			int newNum, long time) {
 		super();
 		this.email = email;
@@ -90,8 +106,8 @@ public class ConversationModel implements Comparable<ConversationModel> {
 			return false;
 		if (o == this)
 			return true;
-		if (o instanceof ConversationModel) {
-			ConversationModel item = (ConversationModel) o;
+		if (o instanceof ConvModel) {
+			ConvModel item = (ConvModel) o;
 			if (item.email.equals(this.email))
 				return true;
 		}
@@ -99,7 +115,7 @@ public class ConversationModel implements Comparable<ConversationModel> {
 	}
 
 	@Override
-	public int compareTo(ConversationModel another) {
+	public int compareTo(ConvModel another) {
 		// TODO Auto-generated method stub
 		return (int) (another.time - this.time);
 	}

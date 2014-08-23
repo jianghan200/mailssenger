@@ -1,9 +1,12 @@
 package com.mailssenger.api;
 
+
 public class MailssengerAPI {
 	
-	public int error_code = 0;
+	public String msg;
 	
-	public int type ;
+	public int code = 0;
+	
+	public Object data ;
 
 }
