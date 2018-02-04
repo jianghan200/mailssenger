@@ -337,48 +337,7 @@ MyPushMessageReceiver.EventHandler, MainServiceCallback,PopupMenu.OnMenuItemClic
     public void initialUserDB(){
    	UserDB mUserDB =CommonApplication.getInstance().getUserDB();
    	ConvDB mConvDB=CommonApplication.getInstance().getConvDB();
-		
-		UserModel u  = new UserModel();
-		u.setEmail("1129966399@qq.com");
-		u.setNickName("Han Jiang");			
-		mUserDB.save(u);
-		
-		u = new UserModel();
-		u.setEmail("zxm024@bham.ac.uk");
-		u.setNickName("Kenny Ma");			
-		mUserDB.save(u);
-		
-		u = new UserModel();
-		u.setEmail("HYW399@cs.bham.ac.uk");
-		u.setNickName("Bowie");			
-		mUserDB.save(u);
-		
-		u = new UserModel();
-		u.setEmail("TYL375@cs.bham.ac.uk‎");
-		u.setNickName("Issac");			
-		mUserDB.save(u);
-		
-		u = new UserModel();
-		u.setEmail("YXF373@cs.bham.ac.uk");
-		u.setNickName("Seffy");			
-		mUserDB.save(u);
-		
-		//Demo 数据
-		ConvModel recentItem = new ConvModel();
-		recentItem.setEmail("zxm024@bham.ac.uk");
-		recentItem.setName("Kenny Ma");
-		recentItem.setMessage("Here is Kenny");
-		recentItem.setNewNum(0);
-		recentItem.setTime(System.currentTimeMillis());
-		mConvDB.saveOrUpdate(recentItem);
-
-		recentItem = new ConvModel();
-		recentItem.setEmail("1129966399@qq.com");
-		recentItem.setName("Han Jiang");
-		recentItem.setMessage("It is a Chinese name");
-		recentItem.setNewNum(0);
-		recentItem.setTime(System.currentTimeMillis());
-		mConvDB.saveOrUpdate(recentItem);
+	
 
     }
 
